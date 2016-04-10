@@ -2,13 +2,19 @@
 
 # Module dependencies
 {Logger} = require './logger'
+fs = require 'fs'
+{parseConfig} = require './parser'
 # Vars
 app = module.exports = {}
-logger = new Logger('retis')
 
 ###
 # Build method
 # @param options {Object} Options
 ###
 app.build = (options) ->
-  console.log 'Building'
+  @logger = new Logger('retis', options)
+  @logger.info('Scanning for build specification...')
+  @logger.deb("CWD: #{"\'#{options.dir}\'".green}") if typeof options.dir != 'undefined'
+  parseConfig(options)
+
+  return

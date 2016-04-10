@@ -7,4 +7,5 @@ pack = require '../package.json'
 com
   .version pack.version
   .command 'build', 'Build the project in the current directory'
+  .command 'download', 'Download build files, plugins .etc'
   .parse process.argv

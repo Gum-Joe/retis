@@ -7,6 +7,7 @@ require 'colours'
 # Vars
 app = module.exports = {}
 ENV = process.env
+that = {};
 
 ###
 # Logger Class
@@ -16,10 +17,11 @@ ENV = process.env
 ###
 class Logger
 
-  constructor: (prefix) ->
+  constructor: (prefix, options) ->
     # body...
     @prefix = prefix
     @debug = debug_module prefix
+    @options = options
 
   ###
   # Info method
@@ -29,8 +31,28 @@ class Logger
   ###
   info: (txt) ->
     # body...
-    if ENV.DEBUG.indexOf @prefix
+    infostring = "INFO"
+    if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
-      @debug txt
+      @debug "#{"#{infostring}".green} #{txt}"
     else
-      console.log txt
+      console.log "#{"[#{@prefix} #{infostring}]".green} #{txt}"
+
+  ###
+  # Debug method
+  #
+  # @colour cyan
+  # @param txt {String} Text to output
+  ###
+  deb: (txt) ->
+    # body...
+    debugstring = "[#{@prefix} DEBUG]".cyan
+    if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
+      # body...
+      @debug "#{debugstring} #{txt}"
+    else if @options.hasOwnProperty('debug') && typeof @options.debug != 'undefined'
+      # body...
+      console.log "#{debugstring} #{txt}"
+
+# Export
+module.exports = Logger: Logger

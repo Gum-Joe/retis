@@ -1,0 +1,3 @@
+# Example file
+plugins:
+  - 'https://github.com/jakhu/retis-plugin-example/master.zip'
