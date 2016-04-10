@@ -1,0 +1,10 @@
+#!/usr/bin/env coffee
+# CLI
+com = require 'commander'
+pack = require '../package.json'
+
+# Setup
+com
+  .version pack.version
+  .command 'build', 'Build the project in the current directory'
+  .parse process.argv
