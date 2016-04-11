@@ -7,12 +7,15 @@ app = require '../lib/main.js'
 # Setup
 com
   .option '--debug', 'Debug logging'
-  .option '-d, --dir <dir>', 'Working directory'
+  .option '-c, --cwd <dir>', 'Working directory'
   .option '-f, --file <file>', 'Specify a .retis.yml to use.'
   .parse process.argv
 
-if typeof com.dir != 'undefined'
+if typeof com.cwd != 'undefined'
   # body...
-  process.cwd com.dir
+  process.chdir com.cwd
+if typeof process.env.RETIS_CWD != 'undefined'
+  # body...
+  process.chdir process.env.RETIS_CWD
 
-app.build file: com.file, debug: com.debug, dir: com.dir
+app.build file: com.file, debug: com.debug

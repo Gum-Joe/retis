@@ -34,7 +34,13 @@
     "colours": "^0.6.0-2",
     "commander": "^2.9.0",
     "debug": "^2.2.0",
-    "mkdirp": "^0.5.1"
+    "follow-redirects": "^0.1.0",
+    "mkdirp": "^0.5.1",
+    "request": "^2.70.0",
+    "unzip": "^0.1.11",
+    "unzip2": "^0.2.5",
+    "xml2js": "^0.4.16",
+    "yamljs": "^0.2.7"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
