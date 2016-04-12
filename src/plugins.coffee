@@ -11,7 +11,7 @@ request = require 'request'
 {https} = require('follow-redirects')
 fs = require('fs')
 urlm = require 'url'
-unzip = require 'unzip2'
+unzip = require 'unzip'
 zlib = require 'zlib'
 targz = require 'tar.gz'
 log = require('single-line-log').stdout
@@ -64,10 +64,26 @@ plugins.fetchPlugin = (url, options) ->
   # Make req
   get(url, file_save, @download_options, (err) ->
     throw err if err
-    logger.info('Extracting...')
-    targz().extract file_save, "#{retis_plugin_dir}/.tmp/extract", (err) ->
-      throw err if err
-      logger.info('Extracted.')
+    logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
+    if path.extname(file_save) == '.zip'
+      # body...
+      # Extract
+      logger.deb("Extracting using npm module #{"\'unzip\'".green}...")
+      fs.createReadStream file_save
+        .pipe unzip.Extract( path: "#{retis_plugin_dir}/.tmp/extract" )
+        .on('close', ->
+          logger.info("Extracted #{url.split('/')[url.split('/').length - 1]} from #{url}.")
+        )
+        .on('error', (err) ->
+          throw err
+        )
+    else if path.extname(file_save) == '.gz' || path.extname(file_save) == '.tar.gz'
+      logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
+      # body...
+      logger.deb("Extracting using npm module #{"\'tar.gz\'".green}...")
+      targz().extract file_save, "#{retis_plugin_dir}/.tmp/extract", (err) ->
+        throw err if err
+        logger.info("Extracted #{url.split('/')[url.split('/').length - 1]} from #{url}.")
   )
   # unzip
   return

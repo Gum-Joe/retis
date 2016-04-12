@@ -6,7 +6,6 @@ request = require 'request'
 progress = require 'request-progress'
 {https} = require('follow-redirects')
 targz = require 'tar.gz'
-log = require('single-line-log').stdout
 {Logger} = require './logger'
 fs = require 'fs'
 require 'colours'
@@ -22,16 +21,17 @@ downloader = module.exports = {}
 # @param callback {Function} Callback
 ###
 downloader.get = (url, save, options, callback) ->
+  log = require('single-line-log').stdout
   # Download
   # Logger
   logger = new Logger('retis', options)
   # File stream
   file_stream = fs.createWriteStream(save)
-  logger.info("Downloading #{url}...")
+  log("#{"[retis INFO]".green} Downloading #{url}...0% at 0 kb/sec...\n")
   progress(request(url))
     .on('progress', (state) ->
       percent = "#{Math.floor(state.percentage * 100)}% [#{Math.round(state.size.transferred / 1024)} kb of #{Math.round(state.size.total / 1024)} kb]"
-      log("#{"[retis INFO]".green} #{percent} at #{Math.round(state.speed / 1024)} kb/sec...\n")
+      log("#{"[retis INFO]".green} Downloading #{url}...#{percent} at #{Math.round(state.speed / 1024)} kb/sec...\n")
     )
     .on('data', (d) ->
       file_stream.write d

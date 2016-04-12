@@ -6,6 +6,7 @@ fs = require 'fs'
 path = require 'path'
 {parseConfig} = require './parser'
 plugins = require './plugins'
+async = require 'async'
 # Vars
 app = module.exports = {}
 

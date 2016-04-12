@@ -1,4 +1,5 @@
 # Example file
 plugins:
-  - 'https://github.com/atom/atom/releases/download/v1.6.2/atom-windows.zip'
+  - 'https://github.com/Gum-Joe/buildup/archive/v0.2.1.zip'
+  - 'https://github.com/Gum-Joe/jakhu/archive/a1.zip'
 name: 'retis-example'
