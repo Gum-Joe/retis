@@ -16,6 +16,7 @@ zlib = require 'zlib'
 targz = require 'tar.gz'
 log = require('single-line-log').stdout
 {get} = require('./downloader')
+downloadList = require './plugins/donwloadList'
 ###
 # Vars
 ###
@@ -31,6 +32,10 @@ retis_plugin_dir = path.join(os.homedir(), retis_plugin_dir)
 plugins.fetchPlugin = (url, options) ->
   # Create logger object
   logger = new Logger('retis', options)
+  if downloadList.check(url, options)
+    # body...
+    logger.deb("Skipping plugin from url #{url}...")
+    return;
   logger.deb('Downloading plugin...')
   logger.deb("Creating dir #{retis_plugin_dir}...")
   mkdirp(retis_plugin_dir, (err) ->
@@ -55,6 +60,12 @@ plugins.fetchPlugin = (url, options) ->
     throw err if err
   ) if fs.existsSync("#{retis_plugin_dir}/.tmp/extract") == false
   logger.deb("Created dir #{retis_plugin_dir}/.tmp/extract.")
+  # plugins/.config
+  logger.deb("Creating dir #{retis_plugin_dir}/.config/...")
+  mkdirp("#{retis_plugin_dir}/.config/", (err) ->
+    throw err if err
+  ) if fs.existsSync("#{retis_plugin_dir}/.config/") == false
+  logger.deb("Created dir #{retis_plugin_dir}/.config/.")
   # Download
   @download_options =
     hostname: urlm.parse(url).hostname
@@ -64,7 +75,7 @@ plugins.fetchPlugin = (url, options) ->
   # Make req
   get(url, file_save, @download_options, (err) ->
     throw err if err
-    logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
+    #logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
     if path.extname(file_save) == '.zip'
       # body...
       # Extract
@@ -72,18 +83,21 @@ plugins.fetchPlugin = (url, options) ->
       fs.createReadStream file_save
         .pipe unzip.Extract( path: "#{retis_plugin_dir}/.tmp/extract" )
         .on('close', ->
-          logger.info("Extracted #{url.split('/')[url.split('/').length - 1]} from #{url}.")
+          #logger.info("Extracted #{url.split('/')[url.split('/').length - 1]} from #{url}.")
         )
         .on('error', (err) ->
           throw err
         )
     else if path.extname(file_save) == '.gz' || path.extname(file_save) == '.tar.gz'
-      logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
+      #logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
       # body...
       logger.deb("Extracting using npm module #{"\'tar.gz\'".green}...")
       targz().extract file_save, "#{retis_plugin_dir}/.tmp/extract", (err) ->
         throw err if err
-        logger.info("Extracted #{url.split('/')[url.split('/').length - 1]} from #{url}.")
+        #logger.info("Extracted #{url.split('/')[url.split('/').length - 1]} from #{url}.")
   )
+  # Add to list
+  logger.deb('Adding to download list...')
+  downloadList.add(url, options)
   # unzip
   return

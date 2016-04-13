@@ -41,7 +41,8 @@ downloader.get = (url, save, options, callback) ->
       callback(e)
       return
     .on 'end', () ->
-      logger.info("Downloaded #{url}.")
+      log("#{"[retis INFO]".green} Downloading #{url}...100%\n")
+      logger.info("Downloaded #{url}.\n")
       #path: "#{retis_plugin_dir}/.tmp/test"
       callback()
   ###

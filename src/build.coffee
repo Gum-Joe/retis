@@ -6,7 +6,6 @@ fs = require 'fs'
 path = require 'path'
 {parseConfig} = require './parser'
 plugins = require './plugins'
-async = require 'async'
 # Vars
 app = module.exports = {}
 
@@ -16,7 +15,7 @@ app = module.exports = {}
 ###
 app.build = (options) ->
   @logger = new Logger('retis', options)
-  @logger.info('Scanning for build specification...')
+  @logger.info('Scanning for project specification...')
   @logger.deb("CWD: #{"\'#{process.cwd()}\'".green}")
   @config = parseConfig options
   @name = @config.name if @config.hasOwnProperty 'name'
@@ -40,4 +39,5 @@ app.build = (options) ->
     for p in @config.plugins
       # body...
       plugins.fetchPlugin(p, options)
+    @logger.info('Finished downloading plugins.')
   return
