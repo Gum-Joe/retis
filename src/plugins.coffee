@@ -32,10 +32,6 @@ retis_plugin_dir = path.join(os.homedir(), retis_plugin_dir)
 plugins.fetchPlugin = (url, options) ->
   # Create logger object
   logger = new Logger('retis', options)
-  if downloadList.check(url, options)
-    # body...
-    logger.deb("Skipping plugin from url #{url}...")
-    return;
   logger.deb('Downloading plugin...')
   logger.deb("Creating dir #{retis_plugin_dir}...")
   mkdirp(retis_plugin_dir, (err) ->
@@ -66,6 +62,10 @@ plugins.fetchPlugin = (url, options) ->
     throw err if err
   ) if fs.existsSync("#{retis_plugin_dir}/.config/") == false
   logger.deb("Created dir #{retis_plugin_dir}/.config/.")
+  if downloadList.check(url, options)
+    # body...
+    logger.deb("Skipping plugin from url #{url}...")
+    return;
   # Download
   @download_options =
     hostname: urlm.parse(url).hostname
@@ -76,6 +76,9 @@ plugins.fetchPlugin = (url, options) ->
   get(url, file_save, @download_options, (err) ->
     throw err if err
     #logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
+    # Add to list
+    logger.deb('Adding to download list...')
+    downloadList.add(url, options)
     if path.extname(file_save) == '.zip'
       # body...
       # Extract
@@ -96,8 +99,5 @@ plugins.fetchPlugin = (url, options) ->
         throw err if err
         #logger.info("Extracted #{url.split('/')[url.split('/').length - 1]} from #{url}.")
   )
-  # Add to list
-  logger.deb('Adding to download list...')
-  downloadList.add(url, options)
   # unzip
   return

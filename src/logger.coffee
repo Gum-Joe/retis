@@ -39,6 +39,21 @@ class Logger
       console.log "#{"[#{@prefix} #{infostring}]".green} #{txt}"
 
   ###
+  # Warn method
+  #
+  # @colour yellow
+  # @param txt {String} Text to output
+  ###
+  warn: (txt) ->
+    # body...
+    warnstring = "WARN"
+    if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
+      # body...
+      @debug "#{"#{warnstring}".yellow} #{txt}"
+    else
+      console.warn "#{"[#{@prefix} #{warnstring}]".yellow} #{txt}"
+
+  ###
   # Debug method
   #
   # @colour cyan

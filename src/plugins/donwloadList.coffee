@@ -48,6 +48,7 @@ list.check = (url, options) ->
   if fs.existsSync(list_file) == false
     # body...
     logger.deb("Creating download list file in #{"\'#{list_file}\'".green}...")
+    fs.openSync(list_file, 'w+')
     fs.writeFileSync(list_file, 'urls: []', 'utf8')
     logger.deb("Created download list file in #{"\'#{list_file}\'".green}.")
   current_file = CSON.parse(fs.readFileSync(list_file))
