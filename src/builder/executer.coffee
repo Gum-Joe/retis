@@ -17,4 +17,4 @@ builder.execBuild = (config, options, logger) ->
   language = config.language
   logger.deb('Starting build for the correct language.')
   logger.deb("Language: #{"\'#{config.language}\'".green}")
-  engines.nodejs.start(config, options, logger) if language == 'nodejs'
+  new engines.nodejs.Builder(config, options, logger).start() if language == 'nodejs'

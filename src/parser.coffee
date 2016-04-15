@@ -19,7 +19,7 @@ parser = module.exports = {}
 # @param options {Object} Options
 ###
 parser.parseConfig = (options) ->
-  @logger = new Logger 'redis:parser', options
+  @logger = new Logger 'redis', options
   @file = '.retis.yml'
   @file = 'retis.json' if fs.existsSync('retis.json')
   @file = 'retis.cson' if fs.existsSync('retis.cson')
