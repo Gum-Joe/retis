@@ -2,7 +2,10 @@
 ###
 # Module dependencies
 ###
+{spawnSync} = require 'child_process'
 require 'colours'
+which = require 'which'
+{Installer} = require './installer'
 ###
 # Vars
 ###
@@ -13,20 +16,20 @@ npm = module.exports = {}
 # @param options {Object} Options
 # @param loggr {Object} Logger
 ###
-class Npm
+class Npm extends Installer
 
   constructor: (options, logger) ->
     # body...
     @options = options
     @logger = logger
     @logger.deb('Logger passed to Npm class.')
-    @npm_command = 'npm'
+    @npm_command = which.sync('npm')
   ###
   # Set up args
   ###
   setUpArgs: ->
     # Set up args
-    @npm_args.unshift '--verbose' if typeof @options.debug != 'undefined' && @options.debug
+    @npm_args.unshift '--verbose' if typeof @options.debug != 'undefined' && @options.debug && !@options.noVerboseInstall
     @npm_args.push('-g') if @npm_options.hasOwnProperty('global') && @npm_options.global
   ###
   # Install method
@@ -41,6 +44,18 @@ class Npm
     @setUpArgs()
     @logger.deb("Command: #{"\'#{@npm_command}\'".green}")
     @logger.deb("NPM args: #{"[".green} #{@npm_args.toString().replace(/,/g, ', ').magenta}  #{"]".green}...")
+    @logger.deb('Running...')
+    @logger.running "#{@npm_command.cyan} #{@npm_args.toString().replace(/,/g, ' ').cyan}"
+    @exec(@npm_command, @npm_args, (stdout) ->
+      # Log stdout
+      @logger.stdout stdout
+    , (stderr) ->
+      if stderr.startsWith('npm verb') || stderr.startsWith('npm info')
+        # Verbose logging
+        @logger.stdout stderr
+      else
+        @logger.stderr(stderr) if stderr != " "
+    )
     return
 
 # Exports

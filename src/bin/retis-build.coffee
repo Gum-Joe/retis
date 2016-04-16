@@ -11,6 +11,7 @@ com
   .option '-d, --docker', 'Run in a docker container'
   .option '-f, --file <file>', 'Specify a .retis.yml to use.'
   .option '-l, --local', 'Don\'t run in a docker container'
+  .option '--no-verbose-install', 'Disable verbose logging for installation of dependencies'
   .option '-v, --verbose', 'Verbose logging'
   .parse process.argv
 
@@ -20,5 +21,8 @@ if typeof com.cwd != 'undefined'
 if typeof process.env.RETIS_CWD != 'undefined'
   # body...
   process.chdir process.env.RETIS_CWD
-
-app.build file: com.file, debug: com.debug || com.verbose, local: com.local || true, docker: com.docker || false
+app.build file: com.file,
+  debug: com.debug || com.verbose,
+  local: com.local || true,
+  docker: com.docker || false,
+  noVerboseInstall: com.noVerboseInstall || true

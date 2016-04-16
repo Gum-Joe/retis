@@ -38,6 +38,7 @@
     "follow-redirects": "^0.1.0",
     "mkdirp": "^0.5.1",
     "multicurl": "0.0.8-14",
+    "npm": "^3.8.6",
     "request": "^2.70.0",
     "request-progress": "^2.0.1",
     "single-line-log": "^1.1.1",
@@ -46,6 +47,7 @@
     "unzip2": "^0.2.5",
     "upath": "^0.1.7",
     "wait-until": "0.0.2",
+    "which": "^1.2.4",
     "xml2js": "^0.4.16",
     "yamljs": "^0.2.7"
   },

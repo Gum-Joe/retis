@@ -2,7 +2,7 @@
 ###
 # Module dependencies
 ###
-npm = require './npm/npm'
+npm = require './npm'
 ###
 # Vars
 ###
@@ -20,6 +20,7 @@ class Installers
     @options = options
     @logger.deb('Logger passed to Installers class.')
     @npm = new npm.Npm @options, @logger
+
 
 # exports
 installers.Installers = Installers

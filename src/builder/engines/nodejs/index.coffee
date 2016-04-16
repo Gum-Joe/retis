@@ -2,7 +2,7 @@
 ###
 # Module dependencies
 ###
-{Build} = require '../../class'
+{Build} = require '../../../classes/build'
 ###
 # Vars
 ###

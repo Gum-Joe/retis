@@ -39,6 +39,51 @@ class Logger
       console.log "#{"[#{@prefix} #{infostring}]".green} #{txt}"
 
   ###
+  # Running method
+  #
+  # @colour magenta
+  # @param txt {String} Text to output
+  ###
+  running: (txt) ->
+    # body...
+    runningstring = "RUN"
+    if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
+      # body...
+      @debug "#{"#{runningstring}".magenta} #{txt}"
+    else
+      console.log "#{"[#{@prefix} #{runningstring}]".magenta} #{txt}"
+
+  ###
+  # Stdout method
+  #
+  # @colour magenta
+  # @param txt {String} Text to output
+  ###
+  stdout: (txt) ->
+    # body...
+    runningstring = "STDOUT"
+    if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
+      # body...
+      @debug "#{"#{runningstring}".magenta} #{txt}"
+    else
+      console.log "#{"[#{@prefix} #{runningstring}]".magenta} #{txt}"
+
+  ###
+  # Stderr method
+  #
+  # @colour magenta
+  # @param txt {String} Text to output
+  ###
+  stderr: (txt) ->
+    # body...
+    runningstring = "STDERR"
+    if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
+      # body...
+      @debug "#{"#{runningstring}".red} #{txt}"
+    else
+      console.log "#{"[#{@prefix} #{runningstring}]".red} #{txt}"
+
+  ###
   # Warn method
   #
   # @colour yellow
@@ -61,13 +106,13 @@ class Logger
   ###
   deb: (txt) ->
     # body...
-    debugstring = "[#{@prefix} DEBUG]".cyan
+    debugstring = "DEBUG"
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{debugstring} #{txt}"
     else if @options.hasOwnProperty('debug') && typeof @options.debug != 'undefined'
       # body...
-      console.log "#{debugstring} #{txt}"
+      console.log "#{"[#{@prefix} #{debugstring}]".cyan} #{txt}"
 
 # Export
 module.exports = Logger: Logger

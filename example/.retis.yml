@@ -10,5 +10,4 @@ language: nodejs
 install: npm install
 global:
   npm:
-    - coffee-script
-    - mocha
+    - buildup
