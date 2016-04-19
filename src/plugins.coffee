@@ -62,7 +62,7 @@ plugins.fetchPlugin = (url, options) ->
     throw err if err
   ) if fs.existsSync("#{retis_plugin_dir}/.config/") == false
   logger.deb("Created dir #{retis_plugin_dir}/.config/.")
-  if downloadList.check(url, options)
+  if downloadList.check(url, options) && typeof options.force == 'undefined'
     # body...
     logger.deb("Skipping plugin from url #{url}...")
     return;
@@ -86,18 +86,17 @@ plugins.fetchPlugin = (url, options) ->
       fs.createReadStream file_save
         .pipe unzip.Extract( path: "#{retis_plugin_dir}/.tmp/extract" )
         .on('close', ->
-          #logger.info("Extracted #{url.split('/')[url.split('/').length - 1]} from #{url}.")
+          unpackPlugin(file_save)
         )
         .on('error', (err) ->
           throw err
         )
     else if path.extname(file_save) == '.gz' || path.extname(file_save) == '.tar.gz'
-      #logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
       # body...
       logger.deb("Extracting using npm module #{"\'tar.gz\'".green}...")
       targz().extract file_save, "#{retis_plugin_dir}/.tmp/extract", (err) ->
         throw err if err
-        #logger.info("Extracted #{url.split('/')[url.split('/').length - 1]} from #{url}.")
+        unpackPlugin(file_save)
   )
   # unzip
   return

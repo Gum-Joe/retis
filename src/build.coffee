@@ -46,7 +46,8 @@ app.build = (options) ->
     #@logger.info('Finished downloading plugins.')
     waituntil(200, 100, ->
       url = config.plugins[config.plugins.length - 1]
-      return true if fs.existsSync "#{retis_plugin_dir}/.tmp/download/"+url.split('/')[url.split('/').length - 1]
+      return true if getDirectories("#{retis_plugin_dir}/.tmp/extract").length >= config.plugins.length
+      #return true if fs.existsSync "#{retis_plugin_dir}/.tmp/download/"+url.split('/')[url.split('/').length - 1]
       return false
     ,(result) ->
       if result == true
@@ -55,3 +56,7 @@ app.build = (options) ->
         execBuild(config, options, _logger)
     )
   return
+
+getDirectories = (srcpath) ->
+  return fs.readdirSync(srcpath).filter (file) ->
+    return fs.statSync(path.join(srcpath, file)).isDirectory()

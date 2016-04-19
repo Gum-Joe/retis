@@ -1,7 +1,8 @@
 # Example file
 plugins:
-  - 'https://github.com/jakhu/retis-tester-1/archive/master.zip'
-  - 'https://github.com/Gum-Joe/TeddyAlive/archive/MasterBackup.zip'
+  - 'https://github.com/Gum-Joe/jakhu/archive/master.zip'
+  # - 'https://github.com/jakhu/retis-tester-1/archive/master.zip'
+  #- 'https://github.com/Gum-Joe/TeddyAlive/archive/MasterBackup.zip'
 name: 'retis-example'
 local: true
 nvm:
@@ -11,3 +12,6 @@ install: npm install
 global:
   npm:
     - buildup
+  gem:
+  #  - Gemfile: ./Gemfile
+    - sass

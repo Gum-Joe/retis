@@ -30,6 +30,9 @@ class Installer
       onStderr(oe)
     # Catch errors
     throw @process.error if @process.error
+    if @process.status != 0
+      # body...
+      throw new Error("Command #{"\'#{command}\'".green} exited with #{@process.status.toString().yellow}")
 
 # Export
 installer.Installer = Installer
