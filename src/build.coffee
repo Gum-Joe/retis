@@ -9,10 +9,12 @@ plugins = require './plugins'
 waituntil = require 'wait-until'
 os = require 'os'
 {execBuild} = require './builder/executer'
+async = require 'async'
 # Vars
 app = module.exports = {}
 retis_plugin_dir = '.retis/plugins'
 retis_plugin_dir = path.join(os.homedir(), retis_plugin_dir)
+plugins_func = []
 
 ###
 # Build method
@@ -42,19 +44,14 @@ app.build = (options) ->
     #@logger.info('Downloading plugins...')
     for p in config.plugins
       # body...
-      plugins.fetchPlugin(p, options)
-    #@logger.info('Finished downloading plugins.')
-    waituntil(200, 100, ->
-      url = config.plugins[config.plugins.length - 1]
-      return true if getDirectories("#{retis_plugin_dir}/.tmp/extract").length >= config.plugins.length
-      #return true if fs.existsSync "#{retis_plugin_dir}/.tmp/download/"+url.split('/')[url.split('/').length - 1]
-      return false
-    ,(result) ->
-      if result == true
-        # body...
-        # Execute
-        execBuild(config, options, _logger)
-    )
+      plugins_func.push ->
+        plugins.fetchPlugin(p, options, ->
+          if p == config.plugins[config.plugins.length - 1]
+            execBuild(config, options, _logger)
+          else
+            return
+        )
+    async.series(plugins_func);
   return
 
 getDirectories = (srcpath) ->

@@ -1,0 +1,23 @@
+# Name plugin
+# Will save as ~/.retis/plugins/<name>
+name: "retis-example"
+# url
+url: "https://github.com/jakhu/retis-tester-1/archive/master.zip"
+# What it will be extracted to
+extract_dir: "retis-tester-1-master"
+# Author
+author: "jakhu"
+# License
+license: "MIT"
+# Language
+language: "nodejs"
+# Entry point
+# Should export plugin methods
+entry: "app.js"
+# Type
+# Types:
+# before:build (Runs before build)
+# before:deploy (After build, before deploy)
+# after:build (Runs after build)
+# after:deploy (After build, after deploy)
+type: "before:build"

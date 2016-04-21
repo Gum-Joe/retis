@@ -9,7 +9,6 @@ os = require 'os'
 mkdirp = require 'mkdirp'
 request = require 'request'
 {https} = require('follow-redirects')
-fs = require('fs')
 urlm = require 'url'
 unzip = require 'unzip'
 zlib = require 'zlib'
@@ -17,6 +16,7 @@ targz = require 'tar.gz'
 log = require('single-line-log').stdout
 {get} = require('./downloader')
 downloadList = require './plugins/donwloadList'
+unpacker = require './plugins/unpacker'
 ###
 # Vars
 ###
@@ -28,8 +28,9 @@ retis_plugin_dir = path.join(os.homedir(), retis_plugin_dir)
 # Download method
 # @param url {String} URL to download
 # @param options {Object} Options
+# @param callback {Function} callback
 ###
-plugins.fetchPlugin = (url, options) ->
+plugins.fetchPlugin = (url, options, callback) ->
   # Create logger object
   logger = new Logger('retis', options)
   logger.deb('Downloading plugin...')
@@ -62,16 +63,17 @@ plugins.fetchPlugin = (url, options) ->
     throw err if err
   ) if fs.existsSync("#{retis_plugin_dir}/.config/") == false
   logger.deb("Created dir #{retis_plugin_dir}/.config/.")
-  if downloadList.check(url, options) && typeof options.force == 'undefined'
+  file_save = "#{retis_plugin_dir}/.tmp/download/"+url.split('/')[url.split('/').length - 2]+'.cson'
+  if downloadList.check(url, options) && typeof options.force == 'undefined' && fs.existsSync file_save
     # body...
     logger.deb("Skipping plugin from url #{url}...")
-    return;
+    callback()
+    return
   # Download
   @download_options =
     hostname: urlm.parse(url).hostname
     path: urlm.parse(url).path
     method: 'GET'
-  file_save = "#{retis_plugin_dir}/.tmp/download/"+url.split('/')[url.split('/').length - 1]
   # Make req
   get(url, file_save, @download_options, (err) ->
     throw err if err
@@ -79,24 +81,9 @@ plugins.fetchPlugin = (url, options) ->
     # Add to list
     logger.deb('Adding to download list...')
     downloadList.add(url, options)
-    if path.extname(file_save) == '.zip'
-      # body...
-      # Extract
-      logger.deb("Extracting using npm module #{"\'unzip\'".green}...")
-      fs.createReadStream file_save
-        .pipe unzip.Extract( path: "#{retis_plugin_dir}/.tmp/extract" )
-        .on('close', ->
-          unpackPlugin(file_save)
-        )
-        .on('error', (err) ->
-          throw err
-        )
-    else if path.extname(file_save) == '.gz' || path.extname(file_save) == '.tar.gz'
-      # body...
-      logger.deb("Extracting using npm module #{"\'tar.gz\'".green}...")
-      targz().extract file_save, "#{retis_plugin_dir}/.tmp/extract", (err) ->
-        throw err if err
-        unpackPlugin(file_save)
+    unpacker.unpack(file_save, options, logger, (err) ->
+      throw err if err
+      callback()
+    )
   )
-  # unzip
   return

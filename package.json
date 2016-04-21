@@ -39,6 +39,7 @@
     "mkdirp": "^0.5.1",
     "multicurl": "0.0.8-14",
     "npm": "^3.8.6",
+    "rename": "^1.0.3",
     "request": "^2.70.0",
     "request-progress": "^2.0.1",
     "single-line-log": "^1.1.1",
