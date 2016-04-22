@@ -17,9 +17,6 @@ class Builder extends Build
     if typeof @options.local != 'undefined' && @options.local == true || @config.hasOwnProperty('local') && @config.local == true
       # body...
       # No need for a bash script
-      if @config.hasOwnProperty 'nvm'
-        # body...
-        @logger.warn 'NVM versioning is not supported on local builds.'
       @logger.info('Running a local build...')
       # Gets globals
       if @config.hasOwnProperty 'global'

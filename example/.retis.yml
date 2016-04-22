@@ -12,5 +12,7 @@ global:
   npm:
     - buildup
   gem:
-  #  - Gemfile: ./Gemfile
+    # - Gemfile: ./Gemfile
     - sass
+  pip:
+    - request

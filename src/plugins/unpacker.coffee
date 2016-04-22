@@ -8,6 +8,7 @@ fs = require 'fs'
 os = require 'os'
 unzip = require 'unzip'
 targz = require 'tar.gz'
+rimraf = require 'rimraf'
 {Logger} = require '../logger'
 {get} = require('../downloader')
 ###
@@ -120,7 +121,13 @@ _finishExtract = (config, logger, callback) ->
     else
       throw err
   # Rename to plugin name
-  fs.rename "#{retis_plugin_dir}/.tmp/extract/#{config.extract_dir}", "#{retis_plugin_dir}/.tmp/extract/#{config.name}", (err) ->
+  # Check exist
+  if fs.existsSync "#{retis_plugin_dir}/#{config.name}"
+    logger.deb "Deleting previous package..."
+    rimraf.sync "#{retis_plugin_dir}/#{config.name}", rmdir: fs.rmdir
+    # body...
+  logger.deb "Finshing install of plugin #{config.name}..."
+  fs.rename "#{retis_plugin_dir}/.tmp/extract/#{config.extract_dir}", "#{retis_plugin_dir}/#{config.name}", (err) ->
     if err
       if typeof callback != 'undefined'
         # body...

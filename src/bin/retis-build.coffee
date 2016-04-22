@@ -11,6 +11,7 @@ com
   .option '-d, --docker', 'Run in a docker container'
   .option '-f, --file <file>', 'Specify a .retis.yml to use'
   .option '--force', 'Force build tasks'
+  .option '--hide-output', 'Hide command output'
   .option '-l, --local', 'Don\'t run in a docker container'
   .option '--no-verbose-install', 'Disable verbose logging for installation of dependencies'
   .option '-v, --verbose', 'Verbose logging'
@@ -28,5 +29,7 @@ app.build(
     debug: com.debug || com.verbose,
     local: com.local || true,
     docker: com.docker || false,
-    noVerboseInstall: com.noVerboseInstall || true # Remove true default on release,
-    force: com.force})
+    noVerboseInstall: com.noVerboseInstall || true, # Remove true default on release,
+    force: com.force,
+    hideOutput: com.hideOutput
+  })

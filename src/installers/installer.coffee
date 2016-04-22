@@ -24,15 +24,27 @@ class Installer
     @stderr = @process.stderr.toString('utf8').split('\n')
     for o in @stdout
       # body...
-      onStdout(o)
+      if @options.hasOwnProperty("hideOutput") == false || @options.hasOwnProperty("hideOutput") && !(@options.hideOutput)
+        onStdout(o)
+      else
+        @logger.deb "STDOUT for command #{"\'#{command}\'".green} hidden."
     for oe in @stderr
       # body...
-      onStderr(oe)
+      if @options.hasOwnProperty("hideOutput") == false || @options.hasOwnProperty("hideOutput") && !(@options.hideOutput)
+        onStderr(o)
+      else
+        @logger.deb "STDERR for command #{"\'#{command}\'".green} hidden."
     # Catch errors
     throw @process.error if @process.error
     if @process.status != 0
       # body...
-      throw new Error("Command #{"\'#{command}\'".green} exited with #{@process.status.toString().yellow}")
+      @logger.err("Command #{"\'#{command}\'".green} exited with #{@process.status.toString().yellow}!")
+      @logger.err("Stderr:")
+      console.log ""
+      for oe in @stderr
+        @logger.stderr(oe)
+      process.exit 1
+      #throw new Error("Command #{"\'#{command}\'".green} exited with #{@process.status.toString().yellow}")
 
 # Export
 installer.Installer = Installer

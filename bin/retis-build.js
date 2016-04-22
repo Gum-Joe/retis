@@ -8,7 +8,7 @@
 
   app = require('../lib/main.js');
 
-  com.option('-c, --cwd <dir>', 'Working directory').option('--debug', 'Debug logging').option('-d, --docker', 'Run in a docker container').option('-f, --file <file>', 'Specify a .retis.yml to use').option('--force', 'Force build tasks').option('-l, --local', 'Don\'t run in a docker container').option('--no-verbose-install', 'Disable verbose logging for installation of dependencies').option('-v, --verbose', 'Verbose logging').parse(process.argv);
+  com.option('-c, --cwd <dir>', 'Working directory').option('--debug', 'Debug logging').option('-d, --docker', 'Run in a docker container').option('-f, --file <file>', 'Specify a .retis.yml to use').option('--force', 'Force build tasks').option('--hide-output', 'Hide command output').option('-l, --local', 'Don\'t run in a docker container').option('--no-verbose-install', 'Disable verbose logging for installation of dependencies').option('-v, --verbose', 'Verbose logging').parse(process.argv);
 
   if (typeof com.cwd !== 'undefined') {
     process.chdir(com.cwd);
@@ -24,7 +24,8 @@
     local: com.local || true,
     docker: com.docker || false,
     noVerboseInstall: com.noVerboseInstall || true,
-    force: com.force
+    force: com.force,
+    hideOutput: com.hideOutput
   });
 
 }).call(this);

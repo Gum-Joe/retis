@@ -9,35 +9,35 @@ which = require 'which'
 ###
 # Vars
 ###
-gem = module.exports = {}
+pip = module.exports = {}
 
 ###
-# Gem installer
+# Pip installer
 # @extends InstaLLer
 # @param options {Object} Options
 # @param loggr {Object} Logger
 ###
-class Gem extends Installer
+class Pip extends Installer
 
   constructor: (options, logger) ->
     # body...
     @options = options
     @logger = logger
-    @logger.deb('Logger passed to Gem class.')
-    @gem_command = which.sync('gem')
+    @logger.deb('Logger passed to Pip class.')
+    @pip_command = which.sync('pip')
   ###
   # Set up args
   ###
   setUpArgs: ->
     # Set up args
-    @gem_args.push '--verbose' if typeof @options.debug != 'undefined' && @options.debug && !@options.noVerboseInstall
+    @pip_args.push '--verbose' if typeof @options.debug != 'undefined' && @options.debug && !@options.noVerboseInstall
   ###
   # Install method
   # @param packages {Array} Packages to install
   # @param options {Object} Options
   ###
   install: (packages, options) ->
-    @logger.info("Getting gem #{"(ruby)".red.bold} global dependencies...")
+    @logger.info("Getting pip #{"(python)".blue.bold} global dependencies...")
     if typeof @options.force == 'undefined'
       # body...
       i = 0
@@ -54,18 +54,18 @@ class Gem extends Installer
       # Check
       if packages.length == 1 && packages[0] == "" || packages.length == 0 || typeof packages != 'array'
         # body...
-        @logger.info("No gem packages to install.")
+        @logger.info("No pip packages to install.")
         return
     @logger.deb("Fetching packages #{"[".green} #{packages.toString().replace(/,/g, ', ').magenta}  #{"]".green}...")
-    @gem_options = options
-    @gem_args = packages
-    @gem_args.unshift 'install'
+    @pip_options = options
+    @pip_args = packages
+    @pip_args.unshift 'install'
     @setUpArgs()
-    @logger.deb("Command: #{"\'#{@gem_command}\'".green}")
-    @logger.deb("Gem args: #{"[".green} #{@gem_args.toString().replace(/,/g, ', ').magenta}  #{"]".green}...")
+    @logger.deb("Command: #{"\'#{@pip_command}\'".green}")
+    @logger.deb("Pip args: #{"[".green} #{@pip_args.toString().replace(/,/g, ', ').magenta}  #{"]".green}...")
     @logger.deb('Running...')
-    @logger.running "#{@gem_command.cyan} #{@gem_args.toString().replace(/,/g, ' ').cyan}"
-    @exec(@gem_command, @gem_args, (stdout) ->
+    @logger.running "#{@pip_command.cyan} #{@pip_args.toString().replace(/,/g, ' ').cyan}"
+    @exec(@pip_command, @pip_args, (stdout) ->
       # Log stdout
       @logger.stdout stdout
     , (stderr) ->
@@ -74,4 +74,4 @@ class Gem extends Installer
     return
 
 # Exports
-gem.Gem = Gem
+pip.Pip = Pip

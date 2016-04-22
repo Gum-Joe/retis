@@ -12,7 +12,8 @@ which = require 'which'
 npm = module.exports = {}
 
 ###
-# Class npm
+# Npm installer
+# @extends InstaLLer
 # @param options {Object} Options
 # @param loggr {Object} Logger
 ###
@@ -37,6 +38,7 @@ class Npm extends Installer
   # @param options {Object} Options
   ###
   install: (packages, options) ->
+    @logger.info("Getting npm #{"(nodejs)".green.bold} global dependencies...")
     if typeof @options.force == 'undefined'
       # body...
       i = 0
@@ -53,7 +55,7 @@ class Npm extends Installer
       # Check
       if packages.length == 1 && packages[0] == "" || packages.length == 0 || typeof packages != 'array'
         # body...
-        @logger.deb("No npm packages to install.")
+        @logger.info("No npm packages to install.")
         return
     @logger.deb("Fetching packages #{"[".green} #{packages.toString().replace(/,/g, ', ').magenta}  #{"]".green}...")
     @npm_options = options

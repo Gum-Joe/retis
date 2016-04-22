@@ -2,8 +2,9 @@
 ###
 # Module dependencies
 ###
-npm = require './npm'
-gem = require './gem'
+{Npm} = require './npm'
+{Gem} = require './gem'
+{Pip} = require './pip'
 ###
 # Vars
 ###
@@ -20,8 +21,9 @@ class Installers
     @logger = logger
     @options = options
     @logger.deb('Logger passed to Installers class.')
-    @npm = new npm.Npm @options, @logger
-    @gem = new gem.Gem @options, @logger
+    @npm = new Npm @options, @logger
+    @gem = new Gem @options, @logger
+    @pip = new Pip @options, @logger
 
 
 # exports
