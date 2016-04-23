@@ -37,6 +37,7 @@ class Pip extends Installer
   # @param options {Object} Options
   ###
   install: (packages, options) ->
+    other_options = @options
     @logger.info("Getting pip #{"(python)".blue.bold} global dependencies...")
     if typeof @options.force == 'undefined'
       # body...
@@ -67,9 +68,9 @@ class Pip extends Installer
     @logger.running "#{@pip_command.cyan} #{@pip_args.toString().replace(/,/g, ' ').cyan}"
     @exec(@pip_command, @pip_args, (stdout) ->
       # Log stdout
-      @logger.stdout stdout
+      @logger.stdout stdout if other_options.hasOwnProperty('showPipOutput') && other_options.showPipOutput == true
     , (stderr) ->
-      @logger.stderr(stderr) if stderr != ""
+      @logger.stderr(stderr) if stderr != "" && other_options.hasOwnProperty('showPipOutput') && other_options.showPipOutput == true
     )
     return
 

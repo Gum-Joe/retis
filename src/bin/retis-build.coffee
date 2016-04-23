@@ -14,6 +14,7 @@ com
   .option '--hide-output', 'Hide command output'
   .option '-l, --local', 'Don\'t run in a docker container'
   .option '--no-verbose-install', 'Disable verbose logging for installation of dependencies'
+  .option '--show-pip-output', 'Show pip installation output'
   .option '-v, --verbose', 'Verbose logging'
   .parse process.argv
 
@@ -31,5 +32,6 @@ app.build(
     docker: com.docker || false,
     noVerboseInstall: com.noVerboseInstall || true, # Remove true default on release,
     force: com.force,
-    hideOutput: com.hideOutput
+    hideOutput: com.hideOutput,
+    showPipOutput: com.showPipOutput || false
   })

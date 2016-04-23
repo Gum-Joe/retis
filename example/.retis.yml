@@ -1,7 +1,6 @@
 # Example file
 plugins:
-  - 'https://raw.githubusercontent.com/jakhu/retis-tester-1/master/psf.cson'
-  #- 'https://github.com/Gum-Joe/TeddyAlive/archive/MasterBackup.zip'
+  - 'https://raw.githubusercontent.com/jakhu/retis-tester-1/test/psf.cson'
 name: 'retis-example'
 local: true
 nvm:

@@ -26,8 +26,6 @@ retis_plugin_dir = path.join(os.homedir(), retis_plugin_dir)
 # @param callback {Function} callback
 ###
 unpack.unpack = (file, options, logger, callback) ->
-  # tmp
-  file = './plugintest.cson'
   # Make logger
   callback = logger if typeof logger == 'function'
   logger = new Logger('retis', options) if typeof logger == 'undefined' && typeof logger != 'function'
@@ -69,7 +67,15 @@ unpack.unpack = (file, options, logger, callback) ->
         .pipe unzip.Extract( path: "#{retis_plugin_dir}/.tmp/extract" )
         .on('close', ->
           logger.deb "Extracted '#{file_save}'"
-          _finishExtract(data, logger, callback)
+          _finishExtract(data, logger, (err) ->
+            if err
+              if typeof callback != 'undefined'
+                callback err
+              else
+                throw err
+            else
+              _cleanUp({ config: data, file: file_save, config_file: file, logger: logger }, callback)
+          )
           return
         )
         .on('error', (err) ->
@@ -90,7 +96,15 @@ unpack.unpack = (file, options, logger, callback) ->
           else
             throw err
         logger.deb "Extracted '#{file_save}'"
-        _finishExtract(data, logger, callback)
+        _finishExtract(data, logger, (err) ->
+          if err
+            if typeof callback != 'undefined'
+              callback err
+            else
+              throw err
+          else
+            _cleanUp({ config: data, file: file_save, config_file: file, logger: logger }, callback)
+        )
         return
     else
       err = new Error "Plugin archive format #{path.extname file_save}, from #{data.url}, is not supported"
@@ -102,6 +116,22 @@ unpack.unpack = (file, options, logger, callback) ->
   )
   return
 
+###
+# Clean up
+# @param options {Object} Options
+# @param callback {Function} Callback
+###
+_cleanUp = (options, callback) ->
+  logger = options.logger
+  config = options.config
+  logger.deb "Cleaning up..."
+  logger.deb "Moving config file #{options.config_file.cyan.bold} to #{"#{retis_plugin_dir}/#{config.name}.psf.cson...".green.bold}"
+  fs.renameSync options.config_file, "#{retis_plugin_dir}/#{config.name}.psf.cson"
+  logger.deb "Removing tmp archive file..."
+  fs.unlinkSync options.file
+  logger.deb "Removed tmp files."
+  callback null
+  return
 ###
 # Finish extraction
 # @param config {Object} Plugin config
