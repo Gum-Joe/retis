@@ -45,24 +45,4 @@ downloader.get = (url, save, options, callback) ->
       logger.info("Downloaded #{url}.\n")
       #path: "#{retis_plugin_dir}/.tmp/test"
       callback()
-  ###
-  #log('0% [0kb of 0kb]\n')
-  @req = https.request(options, (res) ->
-    logger.deb 'statusCode: '+res.statusCode
-    logger.deb 'headers: \n'+JSON.stringify(res.headers, null, '\t')
-    res.on('end', () ->
-      logger.info("Downloaded #{url}.")
-      #path: "#{retis_plugin_dir}/.tmp/test"
-      callback()
-    )
-    res.on 'data', (d) ->
-      file_stream.write d
-      return
-    )
-
-  @req.end()
-  @req.on 'error', (e) ->
-    callback(e)
-    return
-  ###
   return

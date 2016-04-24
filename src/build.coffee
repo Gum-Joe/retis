@@ -29,6 +29,8 @@ app.build = (options) ->
   @name = config.name if config.hasOwnProperty 'name'
   @name = process.cwd().split("/") if process.platform != 'win32' && config.hasOwnProperty('name') == false
   @name = process.cwd().split("\\") if process.platform == 'win32' && config.hasOwnProperty('name') == false
+  options.name = @name[@name.length - 1] if config.hasOwnProperty('name') == false
+  options.name = @name if config.hasOwnProperty('name')
   _logger.deb("Received config from parser.")
   _logger.deb("Starting build...")
   # Begin build
@@ -43,7 +45,6 @@ app.build = (options) ->
   if config.hasOwnProperty 'plugins'
     # body...
     # Download plugins
-    #@logger.info('Downloading plugins...')
     for p in config.plugins
       # body...
       plugins_func.push ->
@@ -57,5 +58,6 @@ app.build = (options) ->
   return
 
 getDirectories = (srcpath) ->
+  # From Stack Overflow
   return fs.readdirSync(srcpath).filter (file) ->
     return fs.statSync(path.join(srcpath, file)).isDirectory()

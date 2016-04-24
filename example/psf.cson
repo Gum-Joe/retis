@@ -1,0 +1,35 @@
+# Sample config
+# Plugins
+plugins: [
+  "https://raw.githubusercontent.com/jakhu/retis-tester-1/test/psf.cson"
+]
+# Name
+name: "retis-example"
+# Where should build artifacts go?
+out_dir: "./build"
+# OS for config
+os: "Linux"
+# Local build
+local: true
+# NVM version
+nvm: [
+  "stable"
+]
+# language
+language: "nodejs"
+# Install command
+install: "npm install"
+# Global dependencies
+global:
+  npm: [
+    "buildup"
+  ]
+  gem: [
+    "sass"
+  ]
+  pip: [
+    "request"
+  ]
+# Run script setup
+sh:
+  hide_env: false

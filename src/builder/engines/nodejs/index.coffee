@@ -3,6 +3,7 @@
 # Module dependencies
 ###
 {Build} = require '../../../classes/build'
+{RunScript} = require '../../../classes/script'
 ###
 # Vars
 ###
@@ -21,6 +22,9 @@ class Builder extends Build
       # Gets globals
       if @config.hasOwnProperty 'global'
         @installGlobals()
+      @logger.deb "Generating run script..."
+      @script = new RunScript @logger, @options, @config
+      @script.applyEnv()
     else
       ###
       # Create bash script

@@ -1,11 +1,11 @@
-#!/usr/bin/env coffee
-# CLI
-com = require 'commander'
-pack = require '../package.json'
+#!/usr/bin/env node
+// CLI
+const com = require('commander');
+const pack = require('../package.json');
 
-# Setup
+// Setup
 com
-  .version pack.version
-  .command 'build', 'Build the project in the current directory'
-  .command 'download', 'Download build files, plugins .etc'
-  .parse process.argv
+  .version(pack.version)
+  .command('build', 'Build the project in the current directory')
+  .command('download', 'Download build files, plugins .etc')
+  .parse(process.argv)
