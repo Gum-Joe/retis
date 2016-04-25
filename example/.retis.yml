@@ -1,0 +1,43 @@
+---
+plugins:
+  - "https://raw.githubusercontent.com/jakhu/retis-tester-1/test/psf.cson"
+name: "retis-example"
+out_dir: "./build"
+os: "Linux"
+scm:
+  type: "git"
+  remote: "origin"
+  user:
+    name: Gum-Joe
+local: true
+nvm:
+  - "stable"
+language: "nodejs"
+
+# CMDs
+pre_install:
+  - echo 'Before install.'
+install:
+  - echo 'Install.'
+post_install:
+  - echo 'After install.'
+pre_build:
+  - echo 'Before build.'
+build:
+  - echo 'Build.'
+post_build:
+  - echo 'Done!'
+  - npm install qiwhfdiuewhfiuwehfihsdcbgewufh23r328uu
+
+global:
+  npm:
+    - "buildup"
+  gem:
+    - "sass"
+  pip:
+    - "request"
+sh:
+  hide_env: false
+
+env:
+  - TEST=test

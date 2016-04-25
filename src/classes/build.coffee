@@ -3,6 +3,8 @@
 # Module dependencies
 ###
 {Installers} = require '../installers/index'
+{version} = require '../../package'
+{RunScript} = require './script'
 ###
 # Build class
 # @param config {Object} config
@@ -39,6 +41,16 @@ class Build
       @logger.deb('Getting pip (python) globals...')
       @installers.pip.install(@global_deps.pip)
     return
+  ###
+  # Create script
+  ###
+  createScript: ->
+    @logger.info("")
+    @logger.info " -----------------------------: retis-script@#{version} :----------------------------- "
+    @logger.info "Generating run script..."
+    @script = new RunScript @logger, @options, @config
+    @script.applyEnv()
+    @script.applyUserEnv()
 
 
 # exports
