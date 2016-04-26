@@ -8,6 +8,7 @@ app = require '../lib/main.js'
 com
   .option '-c, --cwd <dir>', 'Working directory'
   .option '-d, --docker', 'Run in a docker container'
+  .option '-D, --prop [property]', 'Add a property the build. Use the form type:NAME=VALUE. Types: env'
   .option '-f, --file <file>', 'Specify a .retis.yml to use'
   .option '-l, --local', 'Don\'t run in a docker container'
   .option '-o, --out-dir <dir>', 'Specify the build output directory'
@@ -19,6 +20,16 @@ com
   .option '--os <os>', 'Specify an OS for running the build'
   .option '--show-pip-output', 'Show pip installation output'
   .parse process.argv
+
+# Function for getting props
+getProps = ->
+  results = []
+  i = 0
+  while i < com.rawArgs.length
+    if com.rawArgs[i] == '-D' || com.rawArgs[i] == '--prop'
+      results.push com.rawArgs[ i + 1 ]
+    i++
+  return results
 
 if typeof com.cwd != 'undefined'
   # body...
@@ -37,5 +48,6 @@ app.build(
     hideOutput: com.hideOutput,
     showPipOutput: com.showPipOutput || false,
     outDir: com.outDir,
-    os: com.os
+    os: com.os,
+    props: getProps()
   })

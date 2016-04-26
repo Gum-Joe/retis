@@ -15,19 +15,6 @@ nvm:
 language: "nodejs"
 
 # CMDs
-pre_install:
-  - echo 'Before install.'
-install:
-  - echo 'Install.'
-post_install:
-  - echo 'After install.'
-pre_build:
-  - echo 'Before build.'
-build:
-  - echo 'Build.'
-post_build:
-  - echo 'Done!'
-  - npm install qiwhfdiuewhfiuwehfihsdcbgewufh23r328uu
 
 global:
   npm:

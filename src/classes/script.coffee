@@ -137,21 +137,28 @@ class RunScript
   runScript: ->
     # Run
     @logger.deb "Running script #{@run_script}..."
-    if not @os == 'Windows'
+    _logger = @logger
+    if @os != 'Windows'
+      @logger.deb "Running the bash script..."
       @output = spawn 'bash', [ @run_script ]
     else
+      @logger.deb "Running the cmd script..."
       @output = spawn 'cmd', [ @run_script ]
     @output.stdout.on 'data', (data) ->
       # Log stdout
-      @logger.stdout data.toString 'utf8'
+      console.log data.toString 'utf8'
+      return
     @output.stderr.on 'data', (data) ->
       # Log stdout
-      @logger.stderr data.toString 'utf8'
+      console.log data.toString 'utf8'
+      return
     @output.on 'exit', (code) ->
-      @logger.deb "Script exited with #{code}"
+      _logger.deb "Script exited with #{code}"
       if code != 0
-        @logger.err "Script exited with #{code.yellow.bold}!"
+        _logger.err "Script exited with #{code.yellow.bold}!"
         throw new Error "Script exited with #{code}!"
+      return
+    return
   ###
   # Write to script
   # @param data {String} String to write

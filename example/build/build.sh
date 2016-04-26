@@ -9,7 +9,7 @@ export RETIS_PROJECT_NAME="retis-example"
 echo [1m[35mexport[39m[22m RETIS_GIT_USER
 export RETIS_GIT_USER="Gum-Joe"
 echo [1m[35mexport[39m[22m RETIS_GIT_COMMIT
-export RETIS_GIT_COMMIT="fd4f9dade834c40e4be844e3199ed11f8d165c05"
+export RETIS_GIT_COMMIT="befef6a45c99ef768d914984540211daaab4f3d1"
 echo [1m[35mexport[39m[22m RETIS_GIT_BRANCH
 export RETIS_GIT_BRANCH="master"
 echo [1m[35mexport[39m[22m RETIS_GIT_REMOTE
