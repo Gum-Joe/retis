@@ -3,7 +3,9 @@
 # Module dependencies
 ###
 os = require 'os'
+which = require 'which'
 {spawnSync} = require 'child_process'
+{spawn} = require 'child_process'
 {Installers} = require '../installers/index'
 {version} = require '../../package'
 {RunScript} = require './script'
@@ -80,6 +82,12 @@ class Build
   ###
   build: (defaults) ->
     @logger.deb "Building..."
+    # Vars
+    @install_cmd = @config.install.split(' ')[0] if @config.hasOwnProperty('install')
+    @install_cmd = defaults.install.cmd if not @config.hasOwnProperty('install')
+    @install_cmd = which.sync(@install_cmd)
+    @install_args = @config.install.substr(@config.install.indexOf(@install_cmd) + 1 + @install_cmd.length).split(' ') if @config.hasOwnProperty('install')
+    @install_args = defaults.install.args if not @config.hasOwnProperty('install')
     @ph.log "retis-build", version
     @logger.deb "Exporting env..."
     # Create env
@@ -87,6 +95,19 @@ class Build
     for env, value of @env
       @logger.deb "#{"export".magenta.bold} #{env}=#{value}"
       process.env[env] = value
+    # Install
+    @logger.deb "Running install command..."
+    @logger.deb "Command: #{@install_cmd.blue.bold}"
+    @logger.deb "Args: #{"[".magenta.bold} #{@install_args.toString().replace(/,/g, ', ').green.bold} #{"]".magenta.bold}"
+    @logger.running "#{@install_cmd.cyan.bold} #{@install_args.toString().replace(/,/g, ' ').green.bold}"
+    _logger = @logger
+    @install_output = spawn(@install_cmd, @install_args)
+    @install_output.stdout.on('data', (data) ->
+      _logger.stdout data.toString 'utf8'
+    )
+    @install_output.stderr.on('data', (data) ->
+      _logger.stderr data.toString 'utf8'
+    )
 
   ###
   # Init env

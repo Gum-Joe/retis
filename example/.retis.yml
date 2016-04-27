@@ -15,6 +15,7 @@ nvm:
 language: "nodejs"
 
 # CMDs
+#install: 'echo p'
 
 global:
   npm:

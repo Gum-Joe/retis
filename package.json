@@ -44,6 +44,7 @@
     "request-progress": "^2.0.1",
     "rimraf": "^2.5.2",
     "single-line-log": "^1.1.1",
+    "spawnify": "^2.3.0",
     "tar.gz": "^1.0.3",
     "unzip": "^0.1.11",
     "unzip2": "^0.2.5",

@@ -20,6 +20,11 @@ defaults = {
 class Builder extends Build
   start: () ->
     @name = 'nodejs'
+    @nodejs_defaults = {
+      install:
+        cmd: 'npm',
+        args: ['install']
+    }
     if typeof @options.local != 'undefined' && @options.local == true || @config.hasOwnProperty('local') && @config.local == true
       # body...
       # No need for a bash script
@@ -31,7 +36,7 @@ class Builder extends Build
         @_createScript()
       else
         # Build
-        @build(defaults)
+        @build(@nodejs_defaults)
     else
       ###
       # Create bash script
