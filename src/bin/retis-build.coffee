@@ -12,6 +12,7 @@ com
   .option '-f, --file <file>', 'Specify a .retis.yml to use'
   .option '-l, --local', 'Don\'t run in a docker container'
   .option '-o, --out-dir <dir>', 'Specify the build output directory'
+  .option '-s, --show-output', 'Shows the output of build commands'
   .option '-v, --verbose', 'Verbose logging'
   .option '--debug', 'Debug logging'
   .option '--force', 'Force build tasks'
@@ -49,5 +50,6 @@ app.build(
     showPipOutput: com.showPipOutput || false,
     outDir: com.outDir,
     os: com.os,
-    props: getProps()
+    props: getProps(),
+    showOutput: com.showOutput
   })

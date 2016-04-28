@@ -8,7 +8,7 @@
 
   app = require('../lib/main.js');
 
-  com.option('-c, --cwd <dir>', 'Working directory').option('-d, --docker', 'Run in a docker container').option('-D, --prop [property]', 'Add a property the build. Use the form type:NAME=VALUE. Types: env').option('-f, --file <file>', 'Specify a .retis.yml to use').option('-l, --local', 'Don\'t run in a docker container').option('-o, --out-dir <dir>', 'Specify the build output directory').option('-v, --verbose', 'Verbose logging').option('--debug', 'Debug logging').option('--force', 'Force build tasks').option('--hide-output', 'Hide command output').option('--no-verbose-install', 'Disable verbose logging for installation of dependencies').option('--os <os>', 'Specify an OS for running the build').option('--show-pip-output', 'Show pip installation output').parse(process.argv);
+  com.option('-c, --cwd <dir>', 'Working directory').option('-d, --docker', 'Run in a docker container').option('-D, --prop [property]', 'Add a property the build. Use the form type:NAME=VALUE. Types: env').option('-f, --file <file>', 'Specify a .retis.yml to use').option('-l, --local', 'Don\'t run in a docker container').option('-o, --out-dir <dir>', 'Specify the build output directory').option('-s, --show-output', 'Shows the output of build commands').option('-v, --verbose', 'Verbose logging').option('--debug', 'Debug logging').option('--force', 'Force build tasks').option('--hide-output', 'Hide command output').option('--no-verbose-install', 'Disable verbose logging for installation of dependencies').option('--os <os>', 'Specify an OS for running the build').option('--show-pip-output', 'Show pip installation output').parse(process.argv);
 
   getProps = function() {
     var i, results;
@@ -42,7 +42,8 @@
     showPipOutput: com.showPipOutput || false,
     outDir: com.outDir,
     os: com.os,
-    props: getProps()
+    props: getProps(),
+    showOutput: com.showOutput
   });
 
 }).call(this);

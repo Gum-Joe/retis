@@ -86,7 +86,14 @@ class Build
     @install_cmd = @config.install.split(' ')[0] if @config.hasOwnProperty('install')
     @install_cmd = defaults.install.cmd if not @config.hasOwnProperty('install')
     @install_cmd = which.sync(@install_cmd)
-    @install_args = @config.install.substr(@config.install.indexOf(@install_cmd) + 1 + @install_cmd.length).split(' ') if @config.hasOwnProperty('install')
+    @install_args = @config.install.split(' ') if @config.hasOwnProperty('install')
+    if @config.hasOwnProperty('install')
+      @new_install_args = []
+      for arg in @install_args
+        if arg != @install_args[0]
+          @new_install_args.push arg
+        if arg == @install_args[@install_args.length - 1]
+          @install_args = @new_install_args
     @install_args = defaults.install.args if not @config.hasOwnProperty('install')
     @ph.log "retis-build", version
     @logger.deb "Exporting env..."
@@ -96,18 +103,30 @@ class Build
       @logger.deb "#{"export".magenta.bold} #{env}=#{value}"
       process.env[env] = value
     # Install
-    @logger.deb "Running install command..."
+    @logger.info "Running install command..."
     @logger.deb "Command: #{@install_cmd.blue.bold}"
     @logger.deb "Args: #{"[".magenta.bold} #{@install_args.toString().replace(/,/g, ', ').green.bold} #{"]".magenta.bold}"
     @logger.running "#{@install_cmd.cyan.bold} #{@install_args.toString().replace(/,/g, ' ').green.bold}"
     _logger = @logger
-    @install_output = spawn(@install_cmd, @install_args)
-    @install_output.stdout.on('data', (data) ->
-      _logger.stdout data.toString 'utf8'
-    )
-    @install_output.stderr.on('data', (data) ->
-      _logger.stderr data.toString 'utf8'
-    )
+    @install_output = spawnSync(@install_cmd, @install_args)
+    @logger.stdout "Output:" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    @logger.stdout "" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    for stdout in @install_output.stdout.toString('utf8').split('\n')
+      @logger.stdout stdout if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    for stderr in @install_output.stderr.toString('utf8').split('\n')
+      @logger.stderr stderr if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    @logger.info "Process exited with #{@install_output.status.toString().yellow.bold}."
+    if @install_output.status > 0
+      @logger.err "Command #{"\'".cyan.bold} #{@install_cmd.cyan.bold} #{@install_args.toString().replace(/,/g, ' ').cyan.bold}#{"\'".cyan.bold} exited with #{@install_output.status.toString().yellow.bold}!"
+      console.log ""
+      throw new Error "Command \'#{@install_cmd} #{@install_args.toString().replace(/,/g, ' ')}\' exited with #{@install_output.status}!"
+    #@logger.stderr @install_output.stderr.toString('utf8')
+    #@install_output.stdout.on('data', (data) ->
+    #  _logger.stdout data.toString 'utf8'
+    #)
+    #@install_output.stderr.on('data', (data) ->
+    #  _logger.stderr data.toString 'utf8'
+    #)
 
   ###
   # Init env
