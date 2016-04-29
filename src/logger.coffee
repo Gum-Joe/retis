@@ -22,6 +22,7 @@ class Logger
     @prefix = prefix
     @debug = debug_module prefix
     @options = options
+    @starttime = Date.now()
 
   ###
   # Info method
@@ -91,7 +92,7 @@ class Logger
   ###
   err: (txt) ->
     # body...
-    runningstring = "ERROR!"
+    runningstring = "ERR!"
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".red.bold} #{txt}"

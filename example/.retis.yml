@@ -15,7 +15,7 @@ nvm:
 language: "nodejs"
 
 # CMDs
-install: 'npm install -g buildup'
+install: 'npm install'
 
 global:
   npm:

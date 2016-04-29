@@ -108,25 +108,22 @@ class Build
     @logger.deb "Args: #{"[".magenta.bold} #{@install_args.toString().replace(/,/g, ', ').green.bold} #{"]".magenta.bold}"
     @logger.running "#{@install_cmd.cyan.bold} #{@install_args.toString().replace(/,/g, ' ').green.bold}"
     _logger = @logger
+    # Create process
     @install_output = spawnSync(@install_cmd, @install_args)
     @logger.stdout "Output:" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
     @logger.stdout "" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    # Output
     for stdout in @install_output.stdout.toString('utf8').split('\n')
       @logger.stdout stdout if @options.hasOwnProperty('showOutput') && @options.showOutput == true
     for stderr in @install_output.stderr.toString('utf8').split('\n')
       @logger.stderr stderr if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    # Check exit
     @logger.info "Process exited with #{@install_output.status.toString().yellow.bold}."
     if @install_output.status > 0
       @logger.err "Command #{"\'".cyan.bold} #{@install_cmd.cyan.bold} #{@install_args.toString().replace(/,/g, ' ').cyan.bold}#{"\'".cyan.bold} exited with #{@install_output.status.toString().yellow.bold}!"
       console.log ""
       throw new Error "Command \'#{@install_cmd} #{@install_args.toString().replace(/,/g, ' ')}\' exited with #{@install_output.status}!"
-    #@logger.stderr @install_output.stderr.toString('utf8')
-    #@install_output.stdout.on('data', (data) ->
-    #  _logger.stdout data.toString 'utf8'
-    #)
-    #@install_output.stderr.on('data', (data) ->
-    #  _logger.stderr data.toString 'utf8'
-    #)
+    @fail()
 
   ###
   # Init env
@@ -179,5 +176,11 @@ class Build
   ###
   _git: (args) ->
     return spawnSync('git', args).stdout.toString('utf8').slice(0, -1)
+
+  ###
+  # Fail build
+  # @param err {Error} Error to fail with
+  ###
+  fail: require '../fail'
 # exports
 module.exports = Build: Build

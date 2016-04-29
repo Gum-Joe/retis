@@ -3,7 +3,8 @@
 com = require 'commander'
 pack = require '../package.json'
 app = require '../lib/main.js'
-
+# Start
+console.time("starting");
 # Setup
 com
   .option '-c, --cwd <dir>', 'Working directory'
