@@ -5,11 +5,12 @@ pack = require '../package.json'
 app = require '../lib/main.js'
 # Start
 console.time("starting");
-# Setup
+# CLI Setup
 com
   .option '-c, --cwd <dir>', 'Working directory'
   .option '-d, --docker', 'Run in a docker container'
   .option '-D, --prop [property]', 'Add a property the build. Use the form type:NAME=VALUE. Types: env'
+  .option '-e, --trace', 'Show full error message and stack trace on error'
   .option '-f, --file <file>', 'Specify a .retis.yml to use'
   .option '-l, --local', 'Don\'t run in a docker container'
   .option '-o, --out-dir <dir>', 'Specify the build output directory'
@@ -52,5 +53,6 @@ app.build(
     outDir: com.outDir,
     os: com.os,
     props: getProps(),
-    showOutput: com.showOutput
+    showOutput: com.showOutput || com.debug,
+    trace: com.trace
   })

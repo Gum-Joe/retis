@@ -3,7 +3,7 @@
 # Module dependencies
 ###
 os = require 'os'
-which = require 'which'
+which = require '../which'
 {spawnSync} = require 'child_process'
 {spawn} = require 'child_process'
 {Installers} = require '../installers/index'
@@ -83,48 +83,48 @@ class Build
   build: (defaults) ->
     @logger.deb "Building..."
     # Vars
+    # Install
     @install_cmd = @config.install.split(' ')[0] if @config.hasOwnProperty('install')
     @install_cmd = defaults.install.cmd if not @config.hasOwnProperty('install')
-    @install_cmd = which.sync(@install_cmd)
+    # Get cmd
+    @install_cmd = which(@install_cmd)
+    # Args
     @install_args = @config.install.split(' ') if @config.hasOwnProperty('install')
     if @config.hasOwnProperty('install')
-      @new_install_args = []
+      new_install_args = []
       for arg in @install_args
         if arg != @install_args[0]
-          @new_install_args.push arg
+          new_install_args.push arg
         if arg == @install_args[@install_args.length - 1]
-          @install_args = @new_install_args
+          @install_args = new_install_args
     @install_args = defaults.install.args if not @config.hasOwnProperty('install')
+
+    # Build stuff
+    @build_cmd = @config.build.split(' ')[0] if @config.hasOwnProperty('build')
+    @build_cmd = defaults.build.cmd if not @config.hasOwnProperty('build')
+    # Get cmd
+    @build_cmd = which(@build_cmd)
+    # Args
+    @build_args = @config.build.split(' ') if @config.hasOwnProperty('build')
+    if @config.hasOwnProperty('build')
+      new_build_args = []
+      for arg in @build_args
+        if arg != @build_args[0]
+          new_build_args.push arg
+        if arg == @build_args[@build_args.length - 1]
+          @build_args = new_build_args
+    @build_args = defaults.build.args if not @config.hasOwnProperty('build')
+
     @ph.log "retis-build", version
     @logger.deb "Exporting env..."
     # Create env
-    @_initEnv()
-    for env, value of @env
-      @logger.deb "#{"export".magenta.bold} #{env}=#{value}"
-      process.env[env] = value
+    @_applyEnv()
     # Install
     @logger.info "Running install command..."
-    @logger.deb "Command: #{@install_cmd.blue.bold}"
-    @logger.deb "Args: #{"[".magenta.bold} #{@install_args.toString().replace(/,/g, ', ').green.bold} #{"]".magenta.bold}"
-    @logger.running "#{@install_cmd.cyan.bold} #{@install_args.toString().replace(/,/g, ' ').green.bold}"
-    _logger = @logger
-    # Create process
-    @install_output = spawnSync(@install_cmd, @install_args)
-    @logger.stdout "Output:" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
-    @logger.stdout "" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
-    # Output
-    for stdout in @install_output.stdout.toString('utf8').split('\n')
-      @logger.stdout stdout if @options.hasOwnProperty('showOutput') && @options.showOutput == true
-    for stderr in @install_output.stderr.toString('utf8').split('\n')
-      @logger.stderr stderr if @options.hasOwnProperty('showOutput') && @options.showOutput == true
-    # Check exit
-    @logger.info "Process exited with #{@install_output.status.toString().yellow.bold}."
-    if @install_output.status > 0
-      @logger.err "Command #{"\'".cyan.bold} #{@install_cmd.cyan.bold} #{@install_args.toString().replace(/,/g, ' ').cyan.bold}#{"\'".cyan.bold} exited with #{@install_output.status.toString().yellow.bold}!"
-      console.log ""
-      throw new Error "Command \'#{@install_cmd} #{@install_args.toString().replace(/,/g, ' ')}\' exited with #{@install_output.status}!"
-    @fail()
-
+    @exec(@install_cmd, @install_args)
+    @logger.info ""
+    @logger.info "Running build command..."
+    @exec(@build_cmd, @build_args)
   ###
   # Init env
   # @private
@@ -168,6 +168,47 @@ class Build
             split_prop = prop.slice(4, prop.length).split('=')
             @env[split_prop[0]] = split_prop[1]
 
+  ###
+  # Execute
+  # @param cmd {String} Command to execute
+  # @param args {Array} Array of args
+  ###
+  exec: (cmd, args) ->
+    @logger.deb "Command: #{cmd.blue.bold}"
+    @logger.deb "Args: #{"[".magenta.bold} #{args.toString().replace(/,/g, ', ').green.bold} #{"]".magenta.bold}"
+    @logger.running "#{cmd.cyan.bold} #{args.toString().replace(/,/g, ' ').green.bold}"
+    _logger = @logger
+    # Create process
+    @output = spawnSync(cmd, args)
+    # Errors
+    if @output.error
+      err = @output.error
+      if err.code == "ENOENT"
+        err.message = "Command \'#{cmd}\' not found!"
+      @fail(err)
+    @logger.stdout "Output:" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    @logger.stdout "" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    # Output
+    # Stdout
+    for stdout in @output.stdout.toString('utf8').split('\n')
+      @logger.stdout stdout if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    # Stderr
+    for stderr in @output.stderr.toString('utf8').split('\n')
+      @logger.stderr stderr if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    # Check exit
+    @logger.info ""
+    @logger.info "Process exited with #{@output.status.toString().yellow.bold}."
+    if @output.status > 0
+      err_string = "Command #{"\'".cyan.bold}#{cmd.cyan.bold} #{args.toString().replace(/,/g, ' ').cyan.bold}#{"\'".cyan.bold} exited with #{@output.status.toString().yellow.bold}!"
+      @logger.err err_string
+      @logger.err ""
+      @fail new Error "Command \'#{cmd} #{args.toString().replace(/,/g, ' ')}\' exited with #{@output.status}!"
+
+  ###
+  # Fail build
+  # @param err {Error} Error to fail with
+  ###
+  fail: require '../fail'
 
   ###
   # Get git output data
@@ -178,9 +219,12 @@ class Build
     return spawnSync('git', args).stdout.toString('utf8').slice(0, -1)
 
   ###
-  # Fail build
-  # @param err {Error} Error to fail with
+  # Apply env
   ###
-  fail: require '../fail'
+  _applyEnv: ->
+    @_initEnv()
+    for env, value of @env
+      @logger.deb "#{"export".magenta.bold} #{env}=#{value}"
+      process.env[env] = value
 # exports
 module.exports = Build: Build

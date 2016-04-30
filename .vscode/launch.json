@@ -7,15 +7,18 @@
 			"request": "launch",
 			"program": "${workspaceRoot}/bin/retis",
 			"stopOnEntry": false,
-			"args": [],
+			"args": [
+				"build"
+				"-c",
+				"example"
+				"--force"
+				"-D",
+				"env:CLI='true'"
+			],
 			"cwd": "${workspaceRoot}",
 			"preLaunchTask": null,
 			"runtimeExecutable": null,
-			"runtimeArgs": [
-				"--debug",
-				"-c example",
-				"--force"
-			],
+			"runtimeArgs": [],
 			"env": {
 				"NODE_ENV": "development"
 			},

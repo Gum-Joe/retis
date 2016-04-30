@@ -15,7 +15,8 @@ nvm:
 language: "nodejs"
 
 # CMDs
-install: 'npm install'
+install: 'echo p'
+build: 'echo t'
 
 global:
   npm:
