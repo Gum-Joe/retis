@@ -3,6 +3,8 @@
 com = require 'commander'
 pack = require '../package.json'
 app = require '../lib/main.js'
+{Logger} = require '../lib/logger'
+_logger = new Logger('retis', {})
 # Start
 console.time("starting");
 # CLI Setup
@@ -56,3 +58,17 @@ app.build(
     showOutput: com.showOutput || com.debug,
     trace: com.trace
   })
+# exit
+process.on 'exit', (code) ->
+  if code == 0
+    tab = " "
+    memory = process.memoryUsage()
+    mems = "#{Math.round(memory.heapUsed / 1024 / 1024)} / #{Math.round(memory.heapTotal / 1024 / 1024)} MB "
+    _logger.info("")
+    _logger.info('-----------------------------------------------------------------')
+    _logger.info("#{tab}BUILD SUCCESS!")
+    _logger.info('-----------------------------------------------------------------')
+    _logger.info("#{tab}Finished at: #{Date()}")
+    _logger.info("#{tab}Memory: #{mems}")
+    _logger.info("#{tab}Build duration: #{(Date.now() - _logger.starttime) / 100} s")
+    _logger.info('-----------------------------------------------------------------')

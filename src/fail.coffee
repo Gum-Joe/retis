@@ -25,7 +25,7 @@ module.exports = (err) ->
   @logger.err('-----------------------------------------------------------------')
   @logger.err("#{tab}BUILD FAILURE!")
   @logger.err('-----------------------------------------------------------------')
-  @logger.err("#{tab}Time: #{Date()}")
+  @logger.err("#{tab}Finished at: #{Date()}")
   @logger.err("#{tab}Memory: #{mems}")
   @logger.err("#{tab}Build duration: #{(Date.now() - @logger.starttime) / 100} s")
   @logger.err('-----------------------------------------------------------------')
@@ -62,4 +62,5 @@ module.exports = (err) ->
     else
       @logger.err("Re-run retis with the -e switch to show full error message and stack trace.")
       @logger.err("Re-run with the --debug switch for debug logging")
+    @logger.err("1 Error(s)")
     process.exit(1)

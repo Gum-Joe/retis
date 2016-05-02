@@ -4,6 +4,7 @@
 ###
 os = require 'os'
 which = require '../which'
+generators = require '../generators'
 {spawnSync} = require 'child_process'
 {spawn} = require 'child_process'
 {Installers} = require '../installers/index'
@@ -82,10 +83,12 @@ class Build
   ###
   build: (defaults) ->
     @logger.deb "Building..."
+    cmd = new generators.Command(@config, defaults, @logger)
     # Vars
     # Install
-    @install_cmd = @config.install.split(' ')[0] if @config.hasOwnProperty('install')
-    @install_cmd = defaults.install.cmd if not @config.hasOwnProperty('install')
+    @install_cmd = cmd.generate('install')
+    #@install_cmd = @config.install.split(' ')[0] if @config.hasOwnProperty('install')
+    #@install_cmd = defaults.install.cmd if not @config.hasOwnProperty('install')
     # Get cmd
     @install_cmd = which(@install_cmd)
     # Args
