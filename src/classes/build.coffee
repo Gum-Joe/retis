@@ -85,49 +85,37 @@ class Build
     @logger.deb "Building..."
     cmd = new generators.Command(@config, defaults, @logger)
     # Vars
-    # Install
+    # Before_install cmd + args
+    @pre_install_cmd = cmd.generate('pre_install')
+    @pre_install_args = cmd.args('pre_install')
+    # Install cmd + args
     @install_cmd = cmd.generate('install')
-    #@install_cmd = @config.install.split(' ')[0] if @config.hasOwnProperty('install')
-    #@install_cmd = defaults.install.cmd if not @config.hasOwnProperty('install')
-    # Get cmd
-    @install_cmd = which(@install_cmd)
-    # Args
-    @install_args = @config.install.split(' ') if @config.hasOwnProperty('install')
-    if @config.hasOwnProperty('install')
-      new_install_args = []
-      for arg in @install_args
-        if arg != @install_args[0]
-          new_install_args.push arg
-        if arg == @install_args[@install_args.length - 1]
-          @install_args = new_install_args
-    @install_args = defaults.install.args if not @config.hasOwnProperty('install')
+    @install_args = cmd.args('install')
 
     # Build stuff
-    @build_cmd = @config.build.split(' ')[0] if @config.hasOwnProperty('build')
-    @build_cmd = defaults.build.cmd if not @config.hasOwnProperty('build')
-    # Get cmd
-    @build_cmd = which(@build_cmd)
-    # Args
-    @build_args = @config.build.split(' ') if @config.hasOwnProperty('build')
-    if @config.hasOwnProperty('build')
-      new_build_args = []
-      for arg in @build_args
-        if arg != @build_args[0]
-          new_build_args.push arg
-        if arg == @build_args[@build_args.length - 1]
-          @build_args = new_build_args
-    @build_args = defaults.build.args if not @config.hasOwnProperty('build')
+    # Build cmd + args
+    @build_cmd = cmd.generate('build')
+    @build_args = cmd.args('build')
 
     @ph.log "retis-build", version
     @logger.deb "Exporting env..."
     # Create env
     @_applyEnv()
+    # Pre install cmd
+    if @pre_install_cmd and @pre_install_args
+      @logger.info "Running pre_install command..."
+      @exec(@pre_install_cmd, @pre_install_args)
+      console.log ""
     # Install
-    @logger.info "Running install command..."
-    @exec(@install_cmd, @install_args)
-    @logger.info ""
-    @logger.info "Running build command..."
-    @exec(@build_cmd, @build_args)
+    if @install_cmd and @install_args
+      @logger.info "Running install command..."
+      @exec(@install_cmd, @install_args)
+      console.log ""
+    # Build
+    if @build_cmd and @build_args
+      @logger.info "Running build command..."
+      @exec(@build_cmd, @build_args)
+      @logger.info ""
   ###
   # Init env
   # @private
@@ -199,7 +187,6 @@ class Build
     for stderr in @output.stderr.toString('utf8').split('\n')
       @logger.stderr stderr if @options.hasOwnProperty('showOutput') && @options.showOutput == true
     # Check exit
-    @logger.info ""
     @logger.info "Process exited with #{@output.status.toString().yellow.bold}."
     if @output.status > 0
       err_string = "Command #{"\'".cyan.bold}#{cmd.cyan.bold} #{args.toString().replace(/,/g, ' ').cyan.bold}#{"\'".cyan.bold} exited with #{@output.status.toString().yellow.bold}!"

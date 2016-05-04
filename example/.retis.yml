@@ -15,7 +15,8 @@ nvm:
 language: "nodejs"
 
 # CMDs
-install: 'npm install'
+pre_install: echo test
+install: 'npm install ashfuwehfiuhwefiuhwifh'
 build: 'echo No build cmd'
 
 global:

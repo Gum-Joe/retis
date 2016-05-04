@@ -30,6 +30,7 @@
   },
   "homepage": "https://github.com/jakhu/retisci#readme",
   "dependencies": {
+    "caller-id": "^0.1.0",
     "coffee-script": "^1.10.0",
     "colours": "^0.6.0-2",
     "commander": "^2.9.0",

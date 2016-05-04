@@ -16,6 +16,7 @@ com
   .option '-f, --file <file>', 'Specify a .retis.yml to use'
   .option '-l, --local', 'Don\'t run in a docker container'
   .option '-o, --out-dir <dir>', 'Specify the build output directory'
+  .option '-q, --quiet', 'Disable displaying full error messages'
   .option '-s, --show-output', 'Shows the output of build commands'
   .option '-v, --verbose', 'Verbose logging'
   .option '--debug', 'Debug logging'
@@ -56,7 +57,8 @@ app.build(
     os: com.os,
     props: getProps(),
     showOutput: com.showOutput || com.debug,
-    trace: com.trace
+    trace: com.trace,
+    quite: com.quite
   })
 # exit
 process.on 'exit', (code) ->

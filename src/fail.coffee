@@ -62,5 +62,6 @@ module.exports = (err) ->
     else
       @logger.err("Re-run retis with the -e switch to show full error message and stack trace.")
       @logger.err("Re-run with the --debug switch for debug logging")
+      @logger.err("Re-run with the -s switch to show command output")
     @logger.err("1 Error(s)")
     process.exit(1)

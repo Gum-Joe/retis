@@ -47,7 +47,7 @@ class Logger
   ###
   running: (txt) ->
     # body...
-    runningstring = "RUN"
+    runningstring = "RUN "
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".blue.bold} #{txt}"
@@ -62,7 +62,7 @@ class Logger
   ###
   stdout: (txt) ->
     # body...
-    runningstring = "STDOUT"
+    runningstring = "SOUT"
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".magenta.bold} #{txt}"
@@ -77,12 +77,12 @@ class Logger
   ###
   stderr: (txt) ->
     # body...
-    runningstring = "STDERR"
+    runningstring = "SERR"
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".red.bold} #{txt}"
     else
-      console.log "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}"
+      console.error "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}"
 
   ###
   # Error method
@@ -92,12 +92,12 @@ class Logger
   ###
   err: (txt) ->
     # body...
-    runningstring = "ERR!"
+    runningstring = "ERROR!"
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".red.bold} #{txt}"
     else
-      console.log "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}"
+      console.error "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}"
 
   ###
   # Warn method
@@ -107,7 +107,7 @@ class Logger
   ###
   warn: (txt) ->
     # body...
-    warnstring = "WARN"
+    warnstring = "WARN!"
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{warnstring}".yellow} #{txt}"
