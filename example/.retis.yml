@@ -16,8 +16,9 @@ language: "nodejs"
 
 # CMDs
 pre_install: echo test
-install: 'npm install ashfuwehfiuhwefiuhwifh'
-build: 'echo No build cmd'
+install: 'echo Install'
+post_install: 'echo post'
+build: 'echo build cmd'
 
 global:
   npm:

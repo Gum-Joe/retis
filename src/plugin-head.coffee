@@ -18,8 +18,8 @@ class PluginHead
   # @param version {String} Version
   ###
   log: (plugin, version) ->
-    @logger.info("")
     @logger.info(" -----------------------------: #{plugin}@#{version} :----------------------------- ")
+    console.log ""
 
 # Export
 ph.PluginHead = PluginHead

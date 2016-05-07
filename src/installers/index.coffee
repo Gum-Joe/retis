@@ -16,7 +16,7 @@ installers = module.exports = {}
 ###
 class Installers
 
-  constructor: (options, loggger) ->
+  constructor: (options, logger) ->
     # body...
     @logger = logger
     @options = options

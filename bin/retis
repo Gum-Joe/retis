@@ -2,8 +2,9 @@
 // CLI
 const com = require('commander');
 const pack = require('../package.json');
+const h = ""
 // Start time
-console.time("starting");
+console.time("starting")
 // Setup
 com
   .version(pack.version)

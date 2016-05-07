@@ -8,10 +8,6 @@
 ###
 engine = module.exports = {}
 # Default script
-defaults = {
-  install: 'npm install',
-  test: 'npm test'
-}
 ###
 # Engine class
 # @extends build
@@ -29,6 +25,7 @@ class Builder extends Build
       # body...
       # No need for a bash script
       @logger.info('Running a local build...')
+      @logger.info ""
       # Gets globals
       if @config.hasOwnProperty 'global'
         @installGlobals()

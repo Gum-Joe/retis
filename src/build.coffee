@@ -2,11 +2,9 @@
 
 # Module dependencies
 {Logger} = require './logger'
-fs = require 'fs'
 path = require 'path'
 {parseConfig} = require './parser'
 plugins = require './plugins'
-waituntil = require 'wait-until'
 os = require 'os'
 {execBuild} = require './builder/executer'
 async = require 'async'
@@ -34,13 +32,13 @@ app.build = (options) ->
   _logger.deb("Received config from parser.")
   _logger.deb("Starting build...")
   # Begin build
-  _logger.info("");
+  _logger.info("")
   warn.warnings(config, options, _logger)
   _logger.info(":---------------------------------------------:")
   _logger.info("  Building Project \'#{@name[@name.length - 1]}\'...") if config.hasOwnProperty('name') == false
   _logger.info("  Building Project \'#{@name}\'...") if config.hasOwnProperty('name') == true
   _logger.info(":---------------------------------------------:")
-  _logger.info("");
+  _logger.info("")
   # Check for plugins
   if config.hasOwnProperty 'plugins'
     # body...
@@ -54,10 +52,5 @@ app.build = (options) ->
           else
             return
         )
-    async.series(plugins_func);
+    async.series(plugins_func)
   return
-
-getDirectories = (srcpath) ->
-  # From Stack Overflow
-  return fs.readdirSync(srcpath).filter (file) ->
-    return fs.statSync(path.join(srcpath, file)).isDirectory()

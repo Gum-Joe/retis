@@ -3,14 +3,17 @@
 # Module dependencies
 ###
 os = require 'os'
-which = require '../which'
 generators = require '../generators'
+{Installers} = require '../installers'
 {spawnSync} = require 'child_process'
-{spawn} = require 'child_process'
-{Installers} = require '../installers/index'
 {version} = require '../../package'
 {RunScript} = require './script'
 {PluginHead} = require '../plugin-head'
+###
+# Vars
+###
+# Quote
+sq = "\'"
 ###
 # Build class
 # @param config {Object} config
@@ -45,18 +48,29 @@ class Build
     @ph.log "retis-globals", version
     @global_deps = @config.global
     @logger.info('Getting global dependencies...')
+
+    # Install
+
+    # NPM
     if @global_deps.hasOwnProperty 'npm'
       console.log ''
       @logger.deb('Getting npm (nodejs) globals...')
       @installers.npm.install(@global_deps.npm, global: true)
+
+    # GEM
     if @global_deps.hasOwnProperty 'gem'
       console.log ''
       @logger.deb('Getting gem (ruby) globals...')
       @installers.gem.install(@global_deps.gem)
+
+    # PIP
     if @global_deps.hasOwnProperty 'pip'
       console.log ''
       @logger.deb('Getting pip (python) globals...')
       @installers.pip.install(@global_deps.pip)
+
+    # Padding
+    console.log ''
     return
   ###
   # Create script
@@ -85,23 +99,34 @@ class Build
     @logger.deb "Building..."
     cmd = new generators.Command(@config, defaults, @logger)
     # Vars
-    # Before_install cmd + args
+    # pre_install cmd + args
     @pre_install_cmd = cmd.generate('pre_install')
     @pre_install_args = cmd.args('pre_install')
     # Install cmd + args
     @install_cmd = cmd.generate('install')
     @install_args = cmd.args('install')
+    # post_install cmd + args
+    @post_install_cmd = cmd.generate('post_install')
+    @post_install_args = cmd.args('post_install')
 
     # Build stuff
+    # pre_build cmd + args
+    @pre_build_cmd = cmd.generate('pre_build')
+    @pre_build_args = cmd.args('pre_build')
     # Build cmd + args
     @build_cmd = cmd.generate('build')
     @build_args = cmd.args('build')
+    # post_install cmd + args
+    @post_build_cmd = cmd.generate('post_build')
+    @post_build_args = cmd.args('post_build')
 
     @ph.log "retis-build", version
     @logger.deb "Exporting env..."
     # Create env
     @_applyEnv()
-    # Pre install cmd
+
+    # Execute
+    # Pre install
     if @pre_install_cmd and @pre_install_args
       @logger.info "Running pre_install command..."
       @exec(@pre_install_cmd, @pre_install_args)
@@ -111,11 +136,27 @@ class Build
       @logger.info "Running install command..."
       @exec(@install_cmd, @install_args)
       console.log ""
+    # Post install
+    if @post_install_cmd and @post_install_args
+      @logger.info "Running post_install command..."
+      @exec(@post_install_cmd, @post_install_args)
+      console.log ""
+
+    # Pre_install
+    if @pre_build_cmd and @pre_build_args
+      @logger.info "Running pre_build command..."
+      @exec(@pre_build_cmd, @pre_build_args)
+      console.log ""
     # Build
     if @build_cmd and @build_args
       @logger.info "Running build command..."
       @exec(@build_cmd, @build_args)
-      @logger.info ""
+      console.log ""
+    # Post_build
+    if @post_build_cmd and @post_build_args
+      @logger.info "Running post_build command..."
+      @exec(@post_build_cmd, @post_build_args)
+      console.log ""
   ###
   # Init env
   # @private
@@ -145,7 +186,7 @@ class Build
         for env in @config.env
           if not env.includes "="
             # Throw error
-            @logger.err "ENV value #{"\'#{env}\'".cyan.bold} not in the form of #{"NAME=VALUE".green.bold}!"
+            @logger.err "ENV value #{sq.cyan.bold}#{env.cyan.bold}#{sq.cyan.bold} not in the form of #{"NAME=VALUE".green.bold}!"
             throw new Error "ENV value \'#{env}\' not in the form of \'NAME=VALUE\'!"
           else
             env_setup = env.split "="
@@ -168,7 +209,6 @@ class Build
     @logger.deb "Command: #{cmd.blue.bold}"
     @logger.deb "Args: #{"[".magenta.bold} #{args.toString().replace(/,/g, ', ').green.bold} #{"]".magenta.bold}"
     @logger.running "#{cmd.cyan.bold} #{args.toString().replace(/,/g, ' ').green.bold}"
-    _logger = @logger
     # Create process
     @output = spawnSync(cmd, args)
     # Errors
