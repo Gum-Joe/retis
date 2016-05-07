@@ -32,7 +32,6 @@ describe("Downloader.coffee tests", () => {
           done()
         }
       })
-      //done();
     })
     // Fix rm of console.log, due to silent option
     console.log = oldConsole;

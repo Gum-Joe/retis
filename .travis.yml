@@ -1,0 +1,13 @@
+language: nodejs
+node_js:
+  - "stable"
+  - "6.0.0"
+  - "4.4.4"
+  - "4.3.0"
+  - "4.2.0"
+  - "4.1.0"
+
+script:
+  - npm test
+  - echo "Running test build..."
+  - bin/retis build -c example -D env:CLI=works -D env:OTHER=cli

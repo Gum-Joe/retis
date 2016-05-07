@@ -5,8 +5,8 @@
   "main": "lib/main.js",
   "scripts": {
     "test": "mocha",
-    "preinstall": "coffee -o bin -c src/bin",
-    "install": "coffee -o lib -c src"
+    "preinstall": "coffee --bare -o bin -c src/bin",
+    "install": "coffee --bare -o lib -c src"
   },
   "repository": {
     "type": "git",
