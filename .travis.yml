@@ -7,6 +7,10 @@ node_js:
   - "4.2.0"
   - "4.1.0"
 
+env:
+  global:
+    - NODE_ENV=dev
+
 script:
   - npm test
   - echo "Running test build..."
