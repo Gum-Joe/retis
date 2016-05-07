@@ -4,8 +4,6 @@
 ###
 require 'colours'
 callerId = require 'caller-id'
-path = require 'path'
-util = require 'util'
 upath = require 'upath'
 ###
 # Vars

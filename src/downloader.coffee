@@ -4,8 +4,6 @@
 ###
 request = require 'request'
 progress = require 'request-progress'
-{https} = require('follow-redirects')
-targz = require 'tar.gz'
 {Logger} = require './logger'
 fs = require 'fs'
 require 'colours'
@@ -22,6 +20,10 @@ downloader = module.exports = {}
 ###
 downloader.get = (url, save, options, callback) ->
   log = require('single-line-log').stdout
+  if typeof options.silent != 'undefined' and options.silent
+    log = () ->
+      # Nothing to do
+      return
   # Download
   # Logger
   logger = new Logger('retis', options)

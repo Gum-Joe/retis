@@ -5,9 +5,7 @@ debug_module = require 'debug'
 require 'colours'
 
 # Vars
-app = module.exports = {}
 ENV = process.env
-that = {};
 
 ###
 # Logger Class
@@ -24,6 +22,11 @@ class Logger
     @options = options
     @starttime = Date.now()
 
+    # RM console.log for silent build
+    if typeof @options.silent != 'undefined' and @options.silent
+      console.log = () ->
+        return
+
   ###
   # Info method
   #
@@ -37,7 +40,7 @@ class Logger
       # body...
       @debug "#{"#{infostring}".green} #{txt}"
     else
-      console.log "#{"[#{@prefix} #{infostring}]".green} #{txt}"
+      console.log "#{"[#{@prefix} #{infostring}]".green} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Running method
@@ -52,7 +55,7 @@ class Logger
       # body...
       @debug "#{"#{runningstring}".blue.bold} #{txt}"
     else
-      console.log "#{"[#{@prefix} #{runningstring}]".blue.bold} #{txt}"
+      console.log "#{"[#{@prefix} #{runningstring}]".blue.bold} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Stdout method
@@ -67,7 +70,7 @@ class Logger
       # body...
       @debug "#{"#{runningstring}".magenta.bold} #{txt}"
     else
-      console.log "#{"[#{@prefix} #{runningstring}]".magenta.bold} #{txt}"
+      console.log "#{"[#{@prefix} #{runningstring}]".magenta.bold} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Stderr method
@@ -82,7 +85,7 @@ class Logger
       # body...
       @debug "#{"#{runningstring}".red.bold} #{txt}"
     else
-      console.error "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}"
+      console.error "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Error method
@@ -97,7 +100,7 @@ class Logger
       # body...
       @debug "#{"#{runningstring}".red.bold} #{txt}"
     else
-      console.error "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}"
+      console.error "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Warn method
@@ -112,7 +115,7 @@ class Logger
       # body...
       @debug "#{"#{warnstring}".yellow} #{txt}"
     else
-      console.warn "#{"[#{@prefix} #{warnstring}]".yellow} #{txt}"
+      console.warn "#{"[#{@prefix} #{warnstring}]".yellow} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Debug method
@@ -125,10 +128,10 @@ class Logger
     debugstring = "DEBUG"
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
-      @debug "#{debugstring} #{txt}"
+      @debug "#{debugstring.cyan} #{txt}"
     else if @options.hasOwnProperty('debug') && typeof @options.debug != 'undefined'
       # body...
-      console.log "#{"[#{@prefix} #{debugstring}]".cyan} #{txt}"
+      console.log "#{"[#{@prefix} #{debugstring}]".cyan} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
 # Export
 module.exports = Logger: Logger
