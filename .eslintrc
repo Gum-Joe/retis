@@ -13,6 +13,7 @@ env:
 rules:
   # Possible Errors
   comma-dangle: [2, never]
+  no-case-declarations: 0
   no-cond-assign: 2
   no-console: 0
   no-constant-condition: 2
@@ -179,7 +180,7 @@ rules:
   quotes: 0
   require-jsdoc: 0
   semi-spacing: 0
-  semi: 0
+  semi: 1
   sort-vars: 0
   space-after-keywords: 0
   space-before-blocks: 0

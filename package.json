@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha",
     "preinstall": "coffee --bare -o bin -c src/bin",
-    "install": "coffee --bare -o lib -c src"
+    "install": "coffee --bare -o lib -c src",
+    "postinstall": "node script/mkdir.js"
   },
   "repository": {
     "type": "git",
@@ -40,17 +41,17 @@
     "mkdirp": "^0.5.1",
     "multicurl": "0.0.8-14",
     "rename": "^1.0.3",
-    "request": "^2.70.0",
+    "request": "^2.72.0",
     "request-progress": "^2.0.1",
     "rimraf": "^2.5.2",
     "single-line-log": "^1.1.1",
-    "spawnify": "^2.3.0",
+    "spawnify": "^2.3.2",
     "tar.gz": "^1.0.3",
     "unzip": "^0.1.11",
     "unzip2": "^0.2.5",
     "upath": "^0.1.7",
     "wait-until": "0.0.2",
-    "which": "^1.2.4",
+    "which": "^1.2.8",
     "xml2js": "^0.4.16",
     "yamljs": "^0.2.7"
   },

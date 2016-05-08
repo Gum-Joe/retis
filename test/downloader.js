@@ -1,3 +1,6 @@
+/*eslint no-case-declarations: 0*/
+/*eslint no-empty-pattern: 0*/
+/*eslint-env es6*/
 // Tests src/downloader.coffee
 /**
  * Module dependencies

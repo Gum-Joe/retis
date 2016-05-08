@@ -11,7 +11,15 @@ env:
   global:
     - NODE_ENV=dev
 
+install:
+  - echo Installing global deps istanbul and coffee-script...
+  - npm install -g istanbul coffee-script
+  - echo Install deps...
+  - npm install
 script:
+  - echo "Testing..."
   - npm test
+  - echo "Sending coverage..."
+  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
   - echo "Running test build..."
   - bin/retis build -c example -D env:CLI=works -D env:OTHER=cli
