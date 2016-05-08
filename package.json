@@ -1,5 +1,5 @@
 {
-  "name": "retisci",
+  "name": "retis",
   "version": "0.1.0",
   "description": "The advanced ci service for everyone.",
   "main": "lib/main.js",
@@ -7,7 +7,7 @@
     "test": "mocha",
     "preinstall": "coffee --bare -o bin -c src/bin",
     "install": "coffee --bare -o lib -c src",
-    "postinstall": "node script/mkdir.js"
+    "postinstall": "script/mkdirs"
   },
   "repository": {
     "type": "git",

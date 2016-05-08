@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Mkdirs
 /*eslint no-case-declarations: 0*/
 /*eslint no-empty-pattern: 0*/
@@ -20,3 +21,10 @@ const dirs = [
   `${retis}/plugins/.config`, // plugins config
   `${retis}/plugins/.tmp` // plugins tmp storage
 ];
+
+// Mkdirs
+dirs.forEach((current, index, array) => {
+  console.log(`Making directory ${current}...`);
+  mkdirp(current);
+});
+console.log("Done.");

@@ -18,15 +18,11 @@ downloader = module.exports = {}
 # @param options {Object} Options
 # @param callback {Function} Callback
 ###
-downloader.get = (url, save, options, callback) ->
+downloader.get = (url, save, options, logger_options, callback) ->
   log = require('single-line-log').stdout
-  if typeof options.silent != 'undefined' and options.silent
-    log = () ->
-      # Nothing to do
-      return
   # Download
   # Logger
-  logger = new Logger('retis', options)
+  logger = new Logger('retis', logger_options)
   # File stream
   file_stream = fs.createWriteStream(save)
   log("#{"[retis INFO]".green} Downloading #{url}...0% at 0 kb/sec...\n")

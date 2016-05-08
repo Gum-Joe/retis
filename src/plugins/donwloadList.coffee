@@ -4,11 +4,9 @@
 ###
 CSON = require 'cson'
 fs = require 'fs'
-mkdirp = require 'mkdirp'
 {Logger} = require '../logger'
 path = require 'path'
 os = require 'os'
-upath = require 'upath'
 ###
 # Vars
 ###

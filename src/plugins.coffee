@@ -7,13 +7,7 @@ fs = require 'fs'
 path = require 'path'
 os = require 'os'
 mkdirp = require 'mkdirp'
-request = require 'request'
-{https} = require('follow-redirects')
 urlm = require 'url'
-unzip = require 'unzip'
-zlib = require 'zlib'
-targz = require 'tar.gz'
-log = require('single-line-log').stdout
 {get} = require('./downloader')
 downloadList = require './plugins/donwloadList'
 unpacker = require './plugins/unpacker'
@@ -75,7 +69,7 @@ plugins.fetchPlugin = (url, options, callback) ->
     path: urlm.parse(url).path
     method: 'GET'
   # Make req
-  get(url, file_save, @download_options, (err) ->
+  get(url, file_save, @download_options, options, (err) ->
     throw err if err
     #logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
     # Add to list
