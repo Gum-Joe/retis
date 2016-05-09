@@ -53,7 +53,7 @@ unpack.unpack = (file, options, logger, callback) ->
   data.extract_dir = data.name if data.hasOwnProperty('extract_dir') == false
   file_save = "#{retis_plugin_dir}/.tmp/download/#{data.extract_dir}#{path.extname data.url}"
   logger.deb "Downloading archive from #{data.url}..."
-  get(data.url, file_save, @download_options, (err) ->
+  get(data.url, file_save, @download_options, options, (err) ->
     logger.deb "Saved to #{file_save}."
     return callback(err) if err
     throw err if err && typeof callback == 'undefined'
