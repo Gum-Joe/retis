@@ -69,7 +69,7 @@ plugins.fetchPlugin = (url, options, callback) ->
     path: urlm.parse(url).path
     method: 'GET'
   # Make req
-  get(url, file_save, @download_options, options, (err) ->
+  get(url, file_save, options, (err) ->
     throw err if err
     #logger.info("Extracting #{url.split('/')[url.split('/').length - 1]} from #{url}...")
     # Add to list

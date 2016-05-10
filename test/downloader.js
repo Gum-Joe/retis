@@ -28,14 +28,14 @@ describe("Downloader.coffee tests", () => {
       // Check if success
       fs.stat(".TEST.md", (err, stat) => {
         // RM
-        fs.unlinkSync(".TEST.md")
+        fs.unlinkSync(".TEST.md");
         if (err) {
-          done(err)
+          done(err);
         } else {
-          done()
+          done();
         }
-      })
-    })
+      });
+    });
     // Fix rm of console.log, due to silent option
     console.log = oldConsole;
   });
