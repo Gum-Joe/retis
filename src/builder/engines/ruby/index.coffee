@@ -1,4 +1,4 @@
-# Index of nodejs engine + methods
+# Index of ruby engine + methods
 ###
 # Module dependencies
 ###
@@ -17,19 +17,18 @@ engine = module.exports = {}
 class Builder extends Build
   start: () ->
     # Vars
-    @name = 'nodejs'
+    @name = 'ruby'
     @build_defaults = {
       install:
-        cmd: 'npm',
+        cmd: 'bundle',
         args: ['install']
     }
-    lang_col = 'green'
+    lang_col = 'red'
     # Engine info
     @ph.log('engine', version, { prefix: '>> ', suffix: ' >>', noSpace: true })
     @ph.log("engines-#{@name}", version, { prefix: '<< ', suffix: ' >>', noSpace: true })
     @logger.info("")
     @logger.info(" Building using engine #{@name[lang_col].bold}...")
-    @logger.info("")
 
     if typeof @options.local != 'undefined' && @options.local == true || @config.hasOwnProperty('local') && @config.local == true
       # body...

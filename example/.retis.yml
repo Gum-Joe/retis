@@ -12,7 +12,7 @@ scm:
 local: true
 nvm:
   - "stable"
-language: "nodejs"
+language: "ruby"
 
 # CMDs
 pre_install: echo test

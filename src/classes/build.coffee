@@ -98,6 +98,7 @@ class Build
   build: (defaults) ->
     @logger.deb "Building..."
     cmd = new generators.Command(@config, defaults, @logger)
+    warnings = false
     # Vars
     # pre_install cmd + args
     @pre_install_cmd = cmd.generate('pre_install')
@@ -109,6 +110,10 @@ class Build
     @post_install_cmd = cmd.generate('post_install')
     @post_install_args = cmd.args('post_install')
 
+    # Warnings
+    if @pre_install_cmd == null or @install_cmd == null or @post_install_cmd == null
+      warnings = true
+
     # Build stuff
     # pre_build cmd + args
     @pre_build_cmd = cmd.generate('pre_build')
@@ -119,6 +124,19 @@ class Build
     # post_install cmd + args
     @post_build_cmd = cmd.generate('post_build')
     @post_build_args = cmd.args('post_build')
+
+    # Warnings
+    if @pre_build_cmd == null or @build_cmd == null or @post_build_cmd == null
+      warnings = true
+
+    ### Warnings warnings
+    if warnings
+      @logger.warn("#{"NOT".red} #{"OK".green}")
+    else
+      @logger.info("#{"OK".green}")
+    ###
+    # Padding
+    @logger.info("")
 
     @ph.log "retis-build", version
     @logger.deb "Exporting env..."
@@ -234,6 +252,20 @@ class Build
       @logger.err ""
       @fail new Error "Command \'#{cmd} #{args.toString().replace(/,/g, ' ')}\' exited with #{@output.status}!"
 
+  ###
+  # Run default stuff
+  ###
+  default: () ->
+    if typeof @options.local != 'undefined' && @options.local == true || @config.hasOwnProperty('local') && @config.local == true
+      # body...
+      # No need for a bash script
+      @logger.info('Running a local build...')
+      @logger.info ""
+      # Gets globals
+      if @config.hasOwnProperty 'global'
+        @installGlobals()
+      else
+        @logger.info('Not running a local build. Leaving default stuff up to build engine.')
   ###
   # Fail build
   # @param err {Error} Error to fail with

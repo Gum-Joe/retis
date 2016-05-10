@@ -17,4 +17,9 @@ builder.execBuild = (config, options, logger) ->
   language = config.language
   logger.deb('Starting build for the correct language.')
   logger.deb("Language: #{"\'#{config.language}\'".green}")
-  new engines.nodejs.Builder(config, options, logger).start() if language == 'nodejs'
+  engine = new engines.nodejs.Builder(config, options, logger) if language == 'nodejs'
+  engine = new engines.ruby.Builder(config, options, logger) if language == 'ruby'
+  logger.deb("Running defaults...")
+  engine.default()
+  logger.deb("Running build...")
+  engine.start()
