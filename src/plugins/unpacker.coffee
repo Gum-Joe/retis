@@ -17,6 +17,8 @@ rimraf = require 'rimraf'
 unpack = module.exports = {}
 retis_plugin_dir = '.retis/plugins'
 retis_plugin_dir = path.join(os.homedir(), retis_plugin_dir)
+# File to add loaded to
+load_file = path.join(process.cwd(), '.retis/config.cson')
 
 ###
 # Unpack function
@@ -42,6 +44,9 @@ unpack.unpack = (file, options, logger, callback) ->
   # Continue
   # Get data
   data = CSON.parse fs.readFileSync(file, 'utf8')
+  # Check errors
+  if data instanceof Error
+    throw data
   logger.deb "Parsed data from #{file}."
   if !(data.hasOwnProperty 'url')
     # body...
@@ -133,6 +138,43 @@ _cleanUp = (options, callback) ->
   logger.deb "Removed tmp files."
   callback null
   return
+
+###
+# Add plugin to load list
+# @param name {String} Name of package
+# @param logger {Logger} Logger
+# @param callback {Function} Callback
+###
+_addToLoadList = (name, logger, callback) ->
+  logger.deb("Adding package #{name.green} to load list (#{load_file.cyan})...")
+  logger.deb "Parsing old load list..."
+  load = CSON.parse fs.readFileSync(load_file, 'utf8')
+  # Check errors
+  if load instanceof Error
+    if typeof callback != 'undefined'
+      # body...
+      callback load
+    else
+      throw load
+  if not load.hasOwnProperty 'packages'
+    load.packages = []
+  # Add
+  load.packages.push name
+  logger.deb "Re-writting to file..."
+  CSON.createCSONString load, {}, (err, result) ->
+    # Error?
+    if err
+      if typeof callback != 'undefined'
+        # body...
+        callback err
+        return
+      else
+        throw err
+    # Write out
+    fs.writeFileSync(load_file, result, 'utf8')
+    # Callback
+    callback null
+  return
 ###
 # Finish extraction
 # @param config {Object} Plugin config
@@ -165,4 +207,4 @@ _finishExtract = (config, logger, callback) ->
         callback err
       else
         throw err
-    callback null
+    _addToLoadList(config.name, logger, callback)

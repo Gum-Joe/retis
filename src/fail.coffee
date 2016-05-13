@@ -13,7 +13,7 @@ tab = " "
 # Fail build
 # @param err {Error} Error to fail with
 ###
-module.exports = (err) ->
+fail = (err) ->
   # Format taken from Apache Maven
   memory = process.memoryUsage()
   mems = "#{Math.round(memory.heapUsed / 1024 / 1024)} / #{Math.round(memory.heapTotal / 1024 / 1024)} MB "
@@ -63,3 +63,16 @@ module.exports = (err) ->
       @logger.err("Re-run with the -s switch to show command output")
     @logger.err("1 Error(s)")
     process.exit(1)
+
+###
+# Class
+# @param logger {Logger} Logger object
+###
+class Failer
+
+  constructor: (logger) ->
+    @logger = logger
+    @fail = fail
+
+# Export
+module.exports = Failer

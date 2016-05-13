@@ -5,6 +5,7 @@
 path = require 'path'
 {parseConfig} = require './parser'
 plugins = require './plugins'
+mkdirs = require './mkdirs'
 os = require 'os'
 {execBuild} = require './builder/executer'
 async = require 'async'
@@ -39,6 +40,7 @@ app.build = (options) ->
   _logger.info("  Building Project \'#{@name}\'...") if config.hasOwnProperty('name') == true
   _logger.info(":---------------------------------------------:")
   _logger.info("")
+  mkdirs(_logger)
   # Check for plugins
   if config.hasOwnProperty 'plugins'
     # body...

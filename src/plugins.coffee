@@ -28,35 +28,6 @@ plugins.fetchPlugin = (url, options, callback) ->
   # Create logger object
   logger = new Logger('retis', options)
   logger.deb('Downloading plugin...')
-  logger.deb("Creating dir #{retis_plugin_dir}...")
-  mkdirp(retis_plugin_dir, (err) ->
-    throw err if err
-  ) if fs.existsSync(retis_plugin_dir) == false
-  logger.deb("Created dir #{retis_plugin_dir}.")
-  # TMP
-  logger.deb("Creating dir #{retis_plugin_dir}/.tmp...")
-  mkdirp("#{retis_plugin_dir}/.tmp", (err) ->
-    throw err if err
-  ) if fs.existsSync("#{retis_plugin_dir}/.tmp") == false
-  logger.deb("Created dir #{retis_plugin_dir}/.tmp.")
-  # tmp/donwload
-  logger.deb("Creating dir #{retis_plugin_dir}/.tmp/download...")
-  mkdirp("#{retis_plugin_dir}/.tmp/download", (err) ->
-    throw err if err
-  ) if fs.existsSync("#{retis_plugin_dir}/.tmp/download") == false
-  logger.deb("Created dir #{retis_plugin_dir}/.tmp/download.")
-  # tmp/extracts
-  logger.deb("Creating dir #{retis_plugin_dir}/.tmp/extract...")
-  mkdirp("#{retis_plugin_dir}/.tmp/extract", (err) ->
-    throw err if err
-  ) if fs.existsSync("#{retis_plugin_dir}/.tmp/extract") == false
-  logger.deb("Created dir #{retis_plugin_dir}/.tmp/extract.")
-  # plugins/.config
-  logger.deb("Creating dir #{retis_plugin_dir}/.config/...")
-  mkdirp("#{retis_plugin_dir}/.config/", (err) ->
-    throw err if err
-  ) if fs.existsSync("#{retis_plugin_dir}/.config/") == false
-  logger.deb("Created dir #{retis_plugin_dir}/.config/.")
   file_save = "#{retis_plugin_dir}/.tmp/download/"+url.split('/')[url.split('/').length - 2]+'.cson'
   if downloadList.check(url, options) && typeof options.force == 'undefined' && fs.existsSync file_save
     # body...

@@ -4,6 +4,7 @@
 ###
 os = require 'os'
 generators = require '../generators'
+Failer = require '../fail'
 {Installers} = require '../installers'
 {spawnSync} = require 'child_process'
 {version} = require '../../package'
@@ -38,7 +39,8 @@ class Build
       @os = "OSX"
     if !(os.platform() != 'darwin' || 'linux') || (options.hasOwnProperty('os') && typeof options.os != 'undefined' && options.os != 'OSX' && options.os != 'Linux') || (config.hasOwnProperty('os') && config.os != 'OSX' && config.os != 'Linux')
       @os = "Windows"
-    @logger.deb "Initializing default env..."
+    # Failer
+    @fail = new Failer @logger
   ###
   # Install globals
   ###
@@ -266,11 +268,6 @@ class Build
         @installGlobals()
       else
         @logger.info('Not running a local build. Leaving default stuff up to build engine.')
-  ###
-  # Fail build
-  # @param err {Error} Error to fail with
-  ###
-  fail: require '../fail'
 
   ###
   # Get git output data

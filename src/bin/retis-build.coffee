@@ -20,6 +20,7 @@ com
   .option '--debug', 'Debug logging'
   .option '--force', 'Force build tasks'
   .option '--hide-output', 'Hide command output'
+  .option '--no-color', 'Don\'t use coloured output'
   .option '--no-verbose-install', 'Disable verbose logging for installation of dependencies'
   .option '--os <os>', 'Specify an OS for running the build'
   .option '--show-output', 'Shows the output of build commands'
