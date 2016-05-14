@@ -7,27 +7,30 @@ path = require 'path'
 fs = require 'fs'
 os = require 'os'
 ###
-# Vars
-###
-retis_loc = path.join(process.cwd(), '.retis')
-retis_home = path.join(os.homedir(), '.retis')
-retis_plugin_dir = "#{retis_home}/plugins"
-list = [
-  retis_home,
-  retis_plugin_dir,
-  "#{retis_plugin_dir}/.tmp",
-  "#{retis_plugin_dir}/.tmp/download",
-  "#{retis_plugin_dir}/.tmp/extract",
-  "#{retis_plugin_dir}/.config",
-  retis_loc
-]
-files = [
-  { name: "#{retis_loc}/config.cson", contents: "file: \"config.cson\"" }
-]
-###
 # Mkdirs
 ###
 module.exports = (logger) ->
+  ###
+  # Vars
+  # These have to be declared on run
+  # of function
+  # This so process.cwd() is correct.
+  ###
+  retis_loc = path.join(process.cwd(), '.retis')
+  retis_home = path.join(os.homedir(), '.retis')
+  retis_plugin_dir = "#{retis_home}/plugins"
+  list = [
+    retis_home,
+    retis_plugin_dir,
+    "#{retis_plugin_dir}/.tmp",
+    "#{retis_plugin_dir}/.tmp/download",
+    "#{retis_plugin_dir}/.tmp/extract",
+    "#{retis_plugin_dir}/.config",
+    retis_loc
+  ]
+  files = [
+    { name: "#{retis_loc}/config.cson", contents: "file: \"config.cson\"" }
+  ]
   # Loop through array
   # Making each dir if no exsitant.
   logger.deb("Making directories if they do not exist...")

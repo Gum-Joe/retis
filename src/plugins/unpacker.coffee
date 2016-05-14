@@ -17,8 +17,6 @@ rimraf = require 'rimraf'
 unpack = module.exports = {}
 retis_plugin_dir = '.retis/plugins'
 retis_plugin_dir = path.join(os.homedir(), retis_plugin_dir)
-# File to add loaded to
-load_file = path.join(process.cwd(), '.retis/config.cson')
 
 ###
 # Unpack function
@@ -146,6 +144,16 @@ _cleanUp = (options, callback) ->
 # @param callback {Function} Callback
 ###
 _addToLoadList = (name, logger, callback) ->
+  ###
+  # Vars
+  # These have to be declared on run
+  # of function
+  # This so process.cwd() is correct.
+  ###
+  # File to add loaded to
+  load_file = path.join(process.cwd(), '.retis/config.cson')
+  
+  # Add to config.cson
   logger.deb("Adding package #{name.green} to load list (#{load_file.cyan})...")
   logger.deb "Parsing old load list..."
   load = CSON.parse fs.readFileSync(load_file, 'utf8')

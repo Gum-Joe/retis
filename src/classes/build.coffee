@@ -266,8 +266,8 @@ class Build
       # Gets globals
       if @config.hasOwnProperty 'global'
         @installGlobals()
-      else
-        @logger.info('Not running a local build. Leaving default stuff up to build engine.')
+    else
+      @logger.info('Not running a local build. Leaving default stuff up to build engine.')
 
   ###
   # Get git output data

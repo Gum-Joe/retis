@@ -6,9 +6,9 @@
 fs = require 'fs'
 path = require 'path'
 YAML = require 'yamljs'
-XML = require 'xml2js'
 CSON = require 'cson'
 {Logger} = require './logger'
+Failer = require './fail'
 require 'colours'
 # Vars
 parser = module.exports = {}
@@ -19,7 +19,11 @@ parser = module.exports = {}
 # @param options {Object} Options
 ###
 parser.parseConfig = (options) ->
-  @logger = new Logger 'redis', options
+  # Logger
+  @logger = new Logger 'retis', options
+  # Failer
+  fail = new Failer(@logger)
+  # Files
   @file = '.retis.yml'
   @file = 'retis.json' if fs.existsSync('retis.json')
   @file = 'retis.cson' if fs.existsSync('retis.cson')
@@ -58,7 +62,13 @@ parser.parseConfig = (options) ->
   else if @file_suffix == ".cson"
     # Parse using yaml-js
     @logger.deb('Parsing using npm module \'cson\'...')
-    return CSON.parse fs.readFileSync(path.join(process.cwd(), @file))
+    return_val = CSON.parse fs.readFileSync(path.join(process.cwd(), @file))
+    if return_val instanceof Error
+      @logger.info "Error parsing project specification!"
+      err = new Error("Error parsing project specification: #{return_val}")
+      err.stack = return_val.stack
+      fail.fail(err)
+    return return_val
   else
     # Unregonised
-    throw new TypeError 'Type of build specification file was not reconised.'
+    fail.fail new TypeError 'Type of build specification file was not reconised.'

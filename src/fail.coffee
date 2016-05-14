@@ -35,12 +35,12 @@ fail = (err) ->
     if !(filePath2.includes('node_modules/retis/node_modules') or filePath2.includes('node_modules/retis-ci/node_modules') or (filePath2.includes('retis-ci/node_modules') and process.env.NODE_ENV != 'production') or (filePath2.includes('retisci/node_modules') and process.env.NODE_ENV != 'production'))
       @logger.err("This is a problem with retis. Please file an issue at https://github.com/jakhu/retis-ci.")
       # From node-gyp
-      @logger.err("#{tab}<https://github.com/jakhu/retis-ci>")
+      @logger.err("#{tab}<https://github.com/Gum-Joe/retis>")
       @logger.err("")
     else
       @logger.err("This is a problem with one of retis's dependencies. Please file an issue at https://github.com/jakhu/retis-ci.")
       # From node-gyp
-      @logger.err("#{tab}<https://github.com/jakhu/retis-ci>")
+      @logger.err("#{tab}<https://github.com/Gum-Joe/retis>")
       @logger.err("")
   else
     @logger.err("This is not a problem with retis, but a problem with a 3rd party package or tool.")
@@ -72,6 +72,7 @@ class Failer
 
   constructor: (logger) ->
     @logger = logger
+    @options = logger.options
     @fail = fail
 
 # Export

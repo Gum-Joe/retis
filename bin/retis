@@ -2,13 +2,12 @@
 // CLI
 const com = require('commander');
 const pack = require('../package.json');
-const h = ""
 // Start time
-console.time("starting")
+console.time("starting");
 // Setup
 com
   .version(pack.version)
   .usage('<target> [options]')
   .command('build', 'Build the project in the current directory')
   .command('download', 'Download build files, plugins .etc')
-  .parse(process.argv)
+  .parse(process.argv);

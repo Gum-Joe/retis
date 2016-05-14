@@ -50,7 +50,7 @@ class Logger
   ###
   running: (txt) ->
     # body...
-    runningstring = "RUN "
+    runningstring = "EXEC"
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".blue.bold} #{txt}"
