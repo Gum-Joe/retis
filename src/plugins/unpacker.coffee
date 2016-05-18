@@ -152,7 +152,7 @@ _addToLoadList = (name, logger, callback) ->
   ###
   # File to add loaded to
   load_file = path.join(process.cwd(), '.retis/config.cson')
-  
+
   # Add to config.cson
   logger.deb("Adding package #{name.green} to load list (#{load_file.cyan})...")
   logger.deb "Parsing old load list..."
@@ -167,7 +167,7 @@ _addToLoadList = (name, logger, callback) ->
   if not load.hasOwnProperty 'packages'
     load.packages = []
   # Add
-  load.packages.push name
+  load.packages.push name if not load.packages.includes name
   logger.deb "Re-writting to file..."
   CSON.createCSONString load, {}, (err, result) ->
     # Error?

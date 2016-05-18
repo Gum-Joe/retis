@@ -23,7 +23,7 @@ class PluginHead
     suffix = options.suffix if typeof options != 'undefined' and options.hasOwnProperty('suffix')
     suffix = " " if typeof options == 'undefined' or not options.hasOwnProperty('suffix')
     @logger.info("#{prefix}----------------------------- #{plugin}@#{version} -----------------------------#{suffix}")
-    console.log "" if typeof options == 'undefined' or not options.hasOwnProperty('noSpace') or not options.noSpace
+    @logger.info "" if typeof options == 'undefined' or not options.hasOwnProperty('noSpace') or not options.noSpace
 
 # Export
 ph.PluginHead = PluginHead

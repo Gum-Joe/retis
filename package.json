@@ -40,7 +40,7 @@
     "debug": "^2.2.0",
     "follow-redirects": "^0.1.0",
     "mkdirp": "^0.5.1",
-    "multicurl": "0.0.8-14",
+    "multicurl": "0.0.8",
     "rename": "^1.0.3",
     "request": "^2.72.0",
     "request-progress": "^2.0.1",

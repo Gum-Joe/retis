@@ -261,8 +261,8 @@ class Build
     if typeof @options.local != 'undefined' && @options.local == true || @config.hasOwnProperty('local') && @config.local == true
       # body...
       # No need for a bash script
-      @logger.info('Running a local build...')
-      @logger.info ""
+      @logger.deb('Running a local build...')
+      @logger.deb ""
       # Gets globals
       if @config.hasOwnProperty 'global'
         @installGlobals()
