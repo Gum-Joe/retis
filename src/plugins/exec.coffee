@@ -18,7 +18,7 @@ plug = module.exports = {}
 # @param goal {String} Plugin type
 # @param logger {Logger} Logger
 ###
-plug.run = (goal, logger) ->
+plug.run = (goal, logger, config) ->
   # Dir for plugins
   plugins_dir = path.join os.homedir(), '.retis', 'plugins'
   # Failer
@@ -48,7 +48,7 @@ plug.run = (goal, logger) ->
     # Execute?
     if pc.hasOwnProperty('type') and pc.type == goal
       # Execute
-      _exec pc, plugin_dir, logger, fail
+      _exec pc, config, plugin_dir, logger
     else
       logger.deb "Not executing plugin #{plug.green}."
 
@@ -59,28 +59,28 @@ plug.run = (goal, logger) ->
 # @param logger {Logger} Logger
 # @param fail {Failer} Failer for errors
 ###
-_exec = (config, dir, logger, fail) ->
+_exec = (pc, config,  dir, logger) ->
   # Plugin head
   head = new PluginHead logger
+  # Fix if prop missing
+  pc.name = 'retis-plugin' if not pc.hasOwnProperty 'name' or typeof pc.name != 'string'
+  pc.version = '0.0.0' if not pc.hasOwnProperty 'version' or typeof pc.version != 'string'
   # Validate
-  logger.deb "Executing plugin #{config.name.green}..."
+  logger.deb "Executing plugin #{pc.name.green}..."
   logger.deb "Dir: #{dir.cyan}"
-  logger.deb "File to require: #{config.entry.cyan}"
+  logger.deb "File to require: #{pc.entry.cyan}"
   # Warn
-  if not fs.existsSync path.join(dir, config.entry)
-    logger.warn "Plugin #{config.name.green} does not include its entry file #{config.entry.cyan}. #{"STOP".red}."
+  if not fs.existsSync path.join(dir, pc.entry)
+    logger.warn "Plugin #{pc.name.green} does not include its entry file #{pc.entry.cyan}. #{"STOP".red}."
     # Stop
     return
   # Require file
-  file = require path.join(dir, config.entry)
-  # Fix
-  config.name = 'retis-plugin' if not config.hasOwnProperty 'name' or typeof config.name != 'string'
-  config.version = '0.0.0' if not config.hasOwnProperty 'version' or typeof config.version != 'string'
+  file = require path.join(dir, pc.entry)
   # Header
-  head.log config.name, config.version
+  head.log pc.name, pc.version
   # Execute
   # With api
-  file new Api(logger, config)
+  file new Api(logger, config, pc)
 
   # Finish with new line
   logger.info ""

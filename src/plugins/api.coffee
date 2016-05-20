@@ -14,9 +14,13 @@
 ###
 class Api
 
-  constructor: (logger, config) ->
+  constructor: (logger, config, pc) ->
+    # Logger
     @logger = logger
-    @package = config
+    # Package config
+    @config = config
+    # Plugin config
+    @pc = pc
     @args = logger.options
 
 # Export

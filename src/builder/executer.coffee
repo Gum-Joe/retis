@@ -21,9 +21,11 @@ builder.execBuild = (config, options, logger) ->
   engine = new engines.nodejs.Builder(config, options, logger) if language == 'nodejs'
   engine = new engines.ruby.Builder(config, options, logger) if language == 'ruby'
   # Run pre-build plugins (before:build)
-  plugins.run('before:build', logger)
+  plugins.run('before:build', logger, config)
   # Defaults
   logger.deb("Running defaults...")
   engine.default()
   logger.deb("Running build...")
   engine.start()
+  # Run after-build plugins (before:build)
+  plugins.run('after:build', logger, config)
