@@ -15,6 +15,10 @@ tab = " "
 ###
 fail = (err) ->
   # Format taken from Apache Maven
+  if process.env.NODE_ENV == 'test'
+    throw err
+    return
+  # Do
   memory = process.memoryUsage()
   mems = "#{Math.round(memory.heapUsed / 1024 / 1024)} / #{Math.round(memory.heapTotal / 1024 / 1024)} MB "
   filePath = upath.normalize(callerId.getData().filePath)

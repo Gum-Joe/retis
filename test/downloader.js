@@ -9,10 +9,7 @@ const app = require('../lib/downloader');
 const chai = require('chai');
 const fs = require('fs');
 // Default opts
-const options = {
-  silent: true,
-  file: 'example/.retis.yml'
-};
+const options = require('./util/constants').options;
 // Fix rm of console.log, due to silent option
 const oldConsole = console.log;
 // The test
@@ -21,6 +18,7 @@ describe("Downloader.coffee tests", () => {
   afterEach(() => {
     console.log = oldConsole;
   });
+
   // Check if can download
   it("should check if downloader can download a file successfully", (done) => {
     const testurl = "https://raw.githubusercontent.com/jakhu/retis-ci/master/README.md";

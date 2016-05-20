@@ -18,7 +18,7 @@ parser = module.exports = {}
 #
 # @param options {Object} Options
 ###
-parser.parseConfig = (options) ->
+parser.parseConfig = (options, callback) ->
   # Logger
   @logger = new Logger 'retis', options
   # Failer
@@ -36,16 +36,17 @@ parser.parseConfig = (options) ->
     @logger.deb("File: #{"\'#{options.file}\'".green}")
     @file = options.file
     # body...
-
   # Check if exists
   @logger.deb("Parseing build specification file #{@file}...")
   @logger.deb('Checking if file exists...')
+  # Fix logger not available
+  _logger = @logger
   fs.stat(@file, (err, stat) ->
     if err
-      @logger.info('Error parsing build specification file!')
+      _logger.info('Error parsing build specification file!')
       throw err
     if stat.isDirectory()
-      @logger.info('File specified was a directory and not a file!')
+      _logger.info('File specified was a directory and not a file!')
       throw new Error('File was a directory and not a file!')
   )
   @logger.deb('Found file. Parsing')
@@ -71,4 +72,8 @@ parser.parseConfig = (options) ->
     return return_val
   else
     # Unregonised
-    fail.fail new TypeError 'Type of build specification file was not reconised.'
+    if typeof callback != 'undefined'
+      return new TypeError 'Type of build specification file was not reconised.'
+    else
+      fail.fail new TypeError 'Type of build specification file was not reconised.'
+      return
