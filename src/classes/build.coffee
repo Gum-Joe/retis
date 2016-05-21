@@ -100,7 +100,6 @@ class Build
   build: (defaults) ->
     @logger.deb "Building..."
     cmd = new generators.Command(@config, defaults, @logger)
-    warnings = false
     # Vars
     # pre_install cmd + args
     @pre_install_cmd = cmd.generate('pre_install')
@@ -111,10 +110,6 @@ class Build
     # post_install cmd + args
     @post_install_cmd = cmd.generate('post_install')
     @post_install_args = cmd.args('post_install')
-
-    # Warnings
-    if @pre_install_cmd == null or @install_cmd == null or @post_install_cmd == null
-      warnings = true
 
     # Build stuff
     # pre_build cmd + args
@@ -131,12 +126,6 @@ class Build
     if @pre_build_cmd == null or @build_cmd == null or @post_build_cmd == null
       warnings = true
 
-    ### Warnings warnings
-    if warnings
-      @logger.warn("#{"NOT".red} #{"OK".green}")
-    else
-      @logger.info("#{"OK".green}")
-    ###
     # Padding
     @logger.info("")
 

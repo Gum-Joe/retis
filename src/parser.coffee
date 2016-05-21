@@ -65,7 +65,7 @@ parser.parseConfig = (options, callback) ->
     @logger.deb('Parsing using npm module \'cson\'...')
     return_val = CSON.parse fs.readFileSync(path.join(process.cwd(), @file))
     if return_val instanceof Error
-      @logger.info "Error parsing project specification!"
+      @logger.deb "Error parsing project specification!"
       err = new Error("Error parsing project specification: #{return_val}")
       err.stack = return_val.stack
       fail.fail(err)

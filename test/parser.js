@@ -53,7 +53,18 @@ describe("Parser tests", () => {
   });
 
   // Check Unknown file
-  it("should check if parser throws an error is type is unreconised", (done) => {
+  it("should check if parser throws an error when given badly formatted cson file", (done) => {
+    // Customise
+    options.file = "test/util/bad.cson";
+    expect(() => app.parseConfig(options)).to.throw(
+      Error,
+      `Error parsing project specification:`
+    );
+    done();
+  });
+
+  // Check Unknown file
+  it("should check if parser throws an error if type is unreconised", (done) => {
     // Customise
     options.file = "test/parser.js";
     expect(() => app.parseConfig(options)).to.throw(TypeError, 'Type of build specification file was not reconised.');
