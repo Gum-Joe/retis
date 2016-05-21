@@ -18,16 +18,21 @@ parser = module.exports = {}
 #
 # @param options {Object} Options
 ###
-parser.parseConfig = (options, callback) ->
+parser.parseConfig = (options) ->
   # Logger
   @logger = new Logger 'retis', options
   # Failer
   fail = new Failer(@logger)
   # Files
+  ### istanbul ignore next ###
   file = '.retis.yml'
+  ### istanbul ignore next ###
   file = 'retis.json' if fs.existsSync('retis.json')
+  ### istanbul ignore next ###
   file = 'retis.cson' if fs.existsSync('retis.cson')
+  ### istanbul ignore next ###
   file = 'psf.json' if fs.existsSync('psf.json')
+  ### istanbul ignore next ###
   file = 'psf.cson' if fs.existsSync('psf.cson')
   # File?
   if typeof options.file != 'undefined'
@@ -39,8 +44,6 @@ parser.parseConfig = (options, callback) ->
   # Check if exists
   @logger.deb("Parseing build specification file #{file}...")
   @logger.deb('Checking if file exists...')
-  # Fix logger not available
-  _logger = @logger
   stat = fs.statSync(file)
   if stat.isDirectory()
     fail.fail new Error('File was a directory and not a file!')
@@ -69,8 +72,5 @@ parser.parseConfig = (options, callback) ->
     return return_val
   else
     # Unregonised
-    if typeof callback != 'undefined'
-      return new TypeError 'Type of build specification file was not reconised.'
-    else
-      fail.fail new TypeError 'Type of build specification file was not reconised.'
-      return
+    fail.fail new TypeError 'Type of build specification file was not reconised.'
+    return
