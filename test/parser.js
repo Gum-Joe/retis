@@ -63,6 +63,17 @@ describe("Parser tests", () => {
     done();
   });
 
+  // Check directory file
+  it("should check if parser throws an error when given directory", (done) => {
+    // Customise
+    options.file = "test";
+    expect(() => app.parseConfig(options)).to.throw(
+      Error,
+      'File was a directory and not a file!'
+    );
+    done();
+  });
+
   // Check 'bad' file
   it("should check if parser throws an error when given badly formatted cson file", (done) => {
     // Customise

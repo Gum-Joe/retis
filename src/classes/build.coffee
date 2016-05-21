@@ -122,10 +122,6 @@ class Build
     @post_build_cmd = cmd.generate('post_build')
     @post_build_args = cmd.args('post_build')
 
-    # Warnings
-    if @pre_build_cmd == null or @build_cmd == null or @post_build_cmd == null
-      warnings = true
-
     # Padding
     @logger.info("")
 
@@ -137,35 +133,114 @@ class Build
     # Execute
     # Pre install
     if @pre_install_cmd and @pre_install_args
-      @logger.info "Running pre_install command..."
-      @exec(@pre_install_cmd, @pre_install_args)
-      console.log ""
+      if typeof @pre_install_cmd == 'string'
+        # String, so run only one command
+        @logger.info "Running pre_install command..."
+        @exec(@pre_install_cmd, @pre_install_args)
+        # Spacing
+        console.log ""
+      else
+        # Array, so run multiple commands
+        @logger.info "Running pre_install commands..."
+        i = 0
+        # Run each of them
+        while i < @pre_install_cmd.length
+          @exec(@pre_install_cmd[i], @pre_install_args[i])
+          # Spacing
+          console.log ""
+          i++
     # Install
     if @install_cmd and @install_args
-      @logger.info "Running install command..."
-      @exec(@install_cmd, @install_args)
-      console.log ""
+      if typeof @install_cmd == 'string'
+        # String, so run only one command
+        @logger.info "Running install command..."
+        @exec(@install_cmd, @install_args)
+        # Spacing
+        console.log ""
+      else
+        # Array, so run multiple commands
+        @logger.info "Running install commands..."
+        i = 0
+        # Run each of them
+        while i < @install_cmd.length
+          @exec(@install_cmd[i], @install_args[i])
+          # Spacing
+          console.log ""
+          i++
     # Post install
     if @post_install_cmd and @post_install_args
-      @logger.info "Running post_install command..."
-      @exec(@post_install_cmd, @post_install_args)
-      console.log ""
+      if typeof @post_install_cmd == 'string'
+        # String, so run only one command
+        @logger.info "Running post_install command..."
+        @exec(@post_install_cmd, @post_install_args)
+        # Spacing
+        console.log ""
+      else
+        # Array, so run multiple commands
+        @logger.info "Running post_install commands..."
+        i = 0
+        # Run each of them
+        while i < @post_install_cmd.length
+          @exec(@post_install_cmd[i], @post_install_args[i])
+          # Spacing
+          console.log ""
+          i++
 
     # Pre_install
     if @pre_build_cmd and @pre_build_args
-      @logger.info "Running pre_build command..."
-      @exec(@pre_build_cmd, @pre_build_args)
-      console.log ""
+      if typeof @pre_build_cmd == 'string'
+        # String, so run only one command
+        @logger.info "Running pre_build command..."
+        @exec(@pre_build_cmd, @pre_build_args)
+        # Spacing
+        console.log ""
+      else
+        # Array, so run multiple commands
+        @logger.info "Running pre_build commands..."
+        i = 0
+        # Run each of them
+        while i < @pre_build_cmd.length
+          @exec(@pre_build_cmd[i], @pre_build_args[i])
+          # Spacing
+          console.log ""
+          i++
     # Build
     if @build_cmd and @build_args
-      @logger.info "Running build command..."
-      @exec(@build_cmd, @build_args)
-      console.log ""
+      if typeof @build_cmd == 'string'
+        # String, so run only one command
+        @logger.info "Running build command..."
+        @exec(@build_cmd, @build_args)
+        # Spacing
+        console.log ""
+      else
+        # Array, so run multiple commands
+        @logger.info "Running build commands..."
+        i = 0
+        # Run each of them
+        while i < @build_cmd.length
+          @exec(@build_cmd[i], @build_args[i])
+          # Spacing
+          console.log ""
+          i++
+
     # Post_build
     if @post_build_cmd and @post_build_args
-      @logger.info "Running post_build command..."
-      @exec(@post_build_cmd, @post_build_args)
-      console.log ""
+      if typeof @post_build_cmd == 'string'
+        # String, so run only one command
+        @logger.info "Running build command..."
+        @exec(@post_build_cmd, @post_build_args)
+        # Spacing
+        console.log ""
+      else
+        # Array, so run multiple commands
+        @logger.info "Running build commands..."
+        i = 0
+        # Run each of them
+        while i < @post_build_cmd.length
+          @exec(@post_build_cmd[i], @post_build_args[i])
+          # Spacing
+          console.log ""
+          i++
   ###
   # Init env
   # @private
@@ -226,17 +301,17 @@ class Build
       if err.code == "ENOENT"
         err.message = "Command \'#{cmd}\' not found!"
       @fail(err)
-    @logger.stdout "Output:" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
-    @logger.stdout "" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    #@logger.stdout "Output:" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+    #@logger.stdout "" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
     # Output
     # Stdout
     for stdout in @output.stdout.toString('utf8').split('\n')
-      @logger.stdout stdout if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+      @logger.stdout "'#{stdout}'" if stdout != ''
     # Stderr
     for stderr in @output.stderr.toString('utf8').split('\n')
-      @logger.stderr stderr if @options.hasOwnProperty('showOutput') && @options.showOutput == true
+      @logger.stderr stderr if stderr != ''
     # Check exit
-    @logger.info "Process exited with #{@output.status.toString().yellow.bold}."
+    @logger.err "Process exited with #{@output.status.toString().yellow.bold}." if @output.status > 0
     if @output.status > 0
       err_string = "Command #{"\'".cyan.bold}#{cmd.cyan.bold} #{args.toString().replace(/,/g, ' ').cyan.bold}#{"\'".cyan.bold} exited with #{@output.status.toString().yellow.bold}!"
       @logger.err err_string
