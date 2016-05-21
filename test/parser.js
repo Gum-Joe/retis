@@ -42,4 +42,21 @@ describe("Parser tests", () => {
     expect(returned).to.be.a('object');
     done();
   });
+
+  // Check CSON file
+  it("should check if parser can parse a CSON file", (done) => {
+    // Customise
+    options.file = "example/plugintest.cson";
+    const returned = app.parseConfig(options);
+    expect(returned).to.be.a('object');
+    done();
+  });
+
+  // Check Unknown file
+  it("should check if parser throws an error is type is unreconised", (done) => {
+    // Customise
+    options.file = "test/parser.js";
+    expect(() => app.parseConfig(options)).to.throw(TypeError, 'Type of build specification file was not reconised.');
+    done();
+  });
 });
