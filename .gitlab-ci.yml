@@ -1,0 +1,30 @@
+# Versions
+before_script:
+  - nvm -v
+
+# Vars
+variables:
+  NODE_ENV: "dev"
+  NPM_PACKAGES: "mocha istanbul coffee-script coveralls gulp"
+
+stable:
+  script:
+    - nvm use stable
+    - node -v
+    - npm -v
+    - echo "Installing packages..."
+    - npm install $NPM_PACKAGES
+  cache:
+    paths:
+      - node_modules
+
+6.0.0:
+  script:
+    - nvm use 6
+    - node -v
+    - npm -v
+    - echo "Installing packages..."
+    - npm install $NPM_PACKAGES
+  cache:
+    paths:
+      - node_modules

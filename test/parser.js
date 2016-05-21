@@ -21,10 +21,23 @@ describe("Parser tests", () => {
     console.log = oldConsole;
   });
 
+  beforeEach(() => {
+    console.log = oldConsole;
+  });
+
   // Check YAML file
-  it("should check if parser can parse a YAML script file", (done) => {
+  it("should check if parser can parse a YAML file", (done) => {
     // Customise
     options.file = "example/.retis.yml";
+    const returned = app.parseConfig(options);
+    expect(returned).to.be.a('object');
+    done();
+  });
+
+  // Check JSON file
+  it("should check if parser can parse a JSON file", (done) => {
+    // Customise
+    options.file = "package.json";
     const returned = app.parseConfig(options);
     expect(returned).to.be.a('object');
     done();
