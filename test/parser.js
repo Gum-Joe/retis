@@ -52,7 +52,18 @@ describe("Parser tests", () => {
     done();
   });
 
-  // Check Unknown file
+  // Check missing file
+  it("should check if parser throws an error when given badly a non-existant file", (done) => {
+    // Customise
+    options.file = "enoent-file.json";
+    expect(() => app.parseConfig(options)).to.throw(
+      Error,
+      `ENOENT: no such file or directory, stat`
+    );
+    done();
+  });
+
+  // Check 'bad' file
   it("should check if parser throws an error when given badly formatted cson file", (done) => {
     // Customise
     options.file = "test/util/bad.cson";

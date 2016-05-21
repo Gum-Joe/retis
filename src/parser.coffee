@@ -24,46 +24,43 @@ parser.parseConfig = (options, callback) ->
   # Failer
   fail = new Failer(@logger)
   # Files
-  @file = '.retis.yml'
-  @file = 'retis.json' if fs.existsSync('retis.json')
-  @file = 'retis.cson' if fs.existsSync('retis.cson')
-  @file = 'psf.json' if fs.existsSync('psf.json')
-  @file = 'psf.cson' if fs.existsSync('psf.cson')
+  file = '.retis.yml'
+  file = 'retis.json' if fs.existsSync('retis.json')
+  file = 'retis.cson' if fs.existsSync('retis.cson')
+  file = 'psf.json' if fs.existsSync('psf.json')
+  file = 'psf.cson' if fs.existsSync('psf.cson')
   # File?
   if typeof options.file != 'undefined'
     # File specified
     @logger.deb('A file was already specified.')
     @logger.deb("File: #{"\'#{options.file}\'".green}")
-    @file = options.file
+    file = options.file
     # body...
   # Check if exists
-  @logger.deb("Parseing build specification file #{@file}...")
+  @logger.deb("Parseing build specification file #{file}...")
   @logger.deb('Checking if file exists...')
   # Fix logger not available
   _logger = @logger
-  fs.stat(@file, (err, stat) ->
-    if err
-      _logger.info('Error parsing build specification file!')
-      throw err
-    if stat.isDirectory()
-      _logger.info('File specified was a directory and not a file!')
-      throw new Error('File was a directory and not a file!')
-  )
+  stat = fs.statSync(file)
+  if stat.isDirectory()
+    fail.fail new Error('File was a directory and not a file!')
+
+  # Parse
   @logger.deb('Found file. Parsing')
-  @file_suffix = path.extname(@file)
-  @logger.deb("File Extension: #{"\'#{@file_suffix}\'".green}")
-  if @file_suffix == ".yml"
+  file_suffix = path.extname(file)
+  @logger.deb("File Extension: #{"\'#{file_suffix}\'".green}")
+  if file_suffix == ".yml"
     # Parse using yaml-js
     @logger.deb('Parsing using npm module \'yamljs\'...')
-    return YAML.load path.join(process.cwd(), @file)
-  else if @file_suffix == ".json"
+    return YAML.load path.join(process.cwd(), file)
+  else if file_suffix == ".json"
     # Parse using built in json
     @logger.deb('Parsing using nodejs\'s json parser...')
-    return require path.join process.cwd(), @file
-  else if @file_suffix == ".cson"
+    return require path.join process.cwd(), file
+  else if file_suffix == ".cson"
     # Parse using yaml-js
     @logger.deb('Parsing using npm module \'cson\'...')
-    return_val = CSON.parse fs.readFileSync(path.join(process.cwd(), @file))
+    return_val = CSON.parse fs.readFileSync(path.join(process.cwd(), file))
     if return_val instanceof Error
       @logger.deb "Error parsing project specification!"
       err = new Error("Error parsing project specification: #{return_val}")
