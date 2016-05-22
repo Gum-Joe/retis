@@ -5,6 +5,8 @@
 request = require 'request'
 progress = require 'request-progress'
 {Logger} = require './logger'
+chalk = require 'chalk'
+chalk = new chalk.constructor({enabled: true})
 fs = require 'fs'
 require 'colours'
 
@@ -29,11 +31,15 @@ downloader.get = (url, save, options, callback) ->
       # Do nothing
   # File stream
   file_stream = fs.createWriteStream(save)
-  log("#{"[retis INFO]".green} Downloading #{url}...0% at 0 kb/sec...\n")
+  # Time
+  time = chalk.grey("#{new Date().getHours()}:#{new Date().getMinutes()}:#{new Date().getSeconds()}")
+  infostring = chalk.green("INFO")
+  info = "[ #{time} #{infostring} ]"
+  log("#{info} Downloading #{url}...0% at 0 kb/sec...\n")
   progress(request(url))
     .on('progress', (state) ->
       percent = "#{Math.floor(state.percentage * 100)}% [#{Math.round(state.size.transferred / 1024)} kb of #{Math.round(state.size.total / 1024)} kb]"
-      log("#{"[retis INFO]".green} Downloading #{url}...#{percent} at #{Math.round(state.speed / 1024)} kb/sec...\n")
+      log("#{info} Downloading #{url}...#{percent} at #{Math.round(state.speed / 1024)} kb/sec...\n")
     )
     .on('data', (d) ->
       file_stream.write d
@@ -43,7 +49,7 @@ downloader.get = (url, save, options, callback) ->
       callback(e)
       return
     .on 'end', () ->
-      log("#{"[retis INFO]".green} Downloading #{url}...100%\n")
+      log("#{info} Downloading #{url}...100%\n")
       logger.info("Downloaded #{url}.\n")
       callback()
       return

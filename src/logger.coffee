@@ -2,6 +2,8 @@
 
 # Module dependencies
 debug_module = require 'debug'
+chalk = require 'chalk'
+chalk = new chalk.constructor({enabled: true})
 require 'colours'
 
 # Vars
@@ -35,12 +37,13 @@ class Logger
   ###
   info: (txt) ->
     # body...
-    infostring = "INFO"
+    infostring = chalk.green("INFO")
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{infostring}".green} #{txt}"
     else
-      console.log "#{"[#{@prefix} #{infostring}]".green} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
+      time = "#{new Date().getHours()}:#{new Date().getMinutes()}:#{new Date().getSeconds()}"
+      console.log "#{"[ #{chalk.grey(time)} #{infostring} ]"} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Running method
@@ -50,12 +53,13 @@ class Logger
   ###
   running: (txt) ->
     # body...
-    runningstring = "EXEC"
+    runningstring = chalk.blue.bold("EXEC")
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".blue.bold} #{txt}"
     else
-      console.log "#{"[#{@prefix} #{runningstring}]".blue.bold} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
+      time = "#{new Date().getHours()}:#{new Date().getMinutes()}:#{new Date().getSeconds()}"
+      console.log "#{"[ #{chalk.grey(time)} #{runningstring} ]"} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Stdout method
@@ -65,12 +69,13 @@ class Logger
   ###
   stdout: (txt) ->
     # body...
-    runningstring = "SOUT"
+    runningstring = chalk.magenta.bold("SOUT")
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".magenta.bold} #{txt}"
     else
-      console.log "#{"[#{@prefix} #{runningstring}]".magenta.bold} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
+      time = "#{new Date().getHours()}:#{new Date().getMinutes()}:#{new Date().getSeconds()}"
+      console.log "#{"[ #{chalk.grey(time)} #{runningstring} ]"} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Stderr method
@@ -80,12 +85,13 @@ class Logger
   ###
   stderr: (txt) ->
     # body...
-    runningstring = "SERR"
+    runningstring = chalk.red.bold("SERR")
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".red.bold} #{txt}"
     else
-      console.error "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
+      time = "#{new Date().getHours()}:#{new Date().getMinutes()}:#{new Date().getSeconds()}"
+      console.error "#{"[ #{chalk.grey(time)} #{runningstring} ]"} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
 
   ###
   # Error method
@@ -95,13 +101,13 @@ class Logger
   ###
   err: (txt) ->
     # body...
-    runningstring = "ERROR!"
+    runningstring = chalk.bgRed("ERROR")
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{runningstring}".red.bold} #{txt}"
     else
-      console.error "#{"[#{@prefix} #{runningstring}]".red.bold} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
-
+      time = "#{new Date().getHours()}:#{new Date().getMinutes()}:#{new Date().getSeconds()}"
+      console.error "#{"[ #{chalk.grey(time)} #{runningstring} ]"} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
   ###
   # Warn method
   #
@@ -110,13 +116,13 @@ class Logger
   ###
   warn: (txt) ->
     # body...
-    warnstring = "WARN!"
+    warnstring = chalk.yellow("WARN")
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{warnstring}".yellow} #{txt}"
     else
-      console.warn "#{"[#{@prefix} #{warnstring}]".yellow} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
-
+      time = "#{new Date().getHours()}:#{new Date().getMinutes()}:#{new Date().getSeconds()}"
+      console.warn "#{"[ #{chalk.grey(time)} #{warnstring} ]"} #{txt}" if not @options.hasOwnProperty('silent') or not @options.silent
   ###
   # Debug method
   #

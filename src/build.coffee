@@ -33,12 +33,12 @@ app.build = (options) ->
   _logger.deb("Received config from parser.")
   _logger.deb("Starting build...")
   # Begin build
-  _logger.info("")
+  #_logger.info("")
   warn.warnings(config, options, _logger)
-  _logger.info(":---------------------------------------------:")
-  _logger.info("  Building Project \'#{@name[@name.length - 1]}\'...") if config.hasOwnProperty('name') == false
-  _logger.info("  Building Project \'#{@name}\'...") if config.hasOwnProperty('name') == true
-  _logger.info(":---------------------------------------------:")
+  #_logger.info(":---------------------------------------------:")
+  _logger.info("Building Project \'#{@name[@name.length - 1]}\'...") if config.hasOwnProperty('name') == false
+  _logger.info("Building Project \'#{@name}\'...") if config.hasOwnProperty('name') == true
+  #_logger.info(":---------------------------------------------:")
   _logger.info("")
   mkdirs(_logger)
   # Check for plugins
