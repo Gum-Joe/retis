@@ -69,7 +69,7 @@ env:
 
 ```
 
-# Building
+# Compiling
 ```bash
 # Compile libs
 coffee --bare -o lib -c src
