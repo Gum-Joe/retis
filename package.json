@@ -1,6 +1,6 @@
 {
   "name": "retis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The advanced ci service for everyone.",
   "main": "lib/main.js",
   "scripts": {
