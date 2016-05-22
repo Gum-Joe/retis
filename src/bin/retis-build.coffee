@@ -69,13 +69,13 @@ process.on 'exit', (code) ->
     tab = " "
     memory = process.memoryUsage()
     mems = "#{Math.round(memory.heapUsed / 1024 / 1024)} / #{Math.round(memory.heapTotal / 1024 / 1024)} MB "
-    _logger.info("")
+    #_logger.info("")
     _logger.info('-----------------------------------------------------------------')
     _logger.info("#{tab}BUILD SUCCESS! (took #{(Date.now() - _logger.starttime) / 100} s)")
     #_logger.info("")
     _logger.info('-----------------------------------------------------------------')
-    _logger.info("#{tab}Finished at: #{Date()}")
-    _logger.info("#{tab}Memory: #{mems}") if process.env.NODE_ENV == 'dev' or process.env.NODE_ENV == 'development'
+    #_logger.info("#{tab}Finished at: #{Date()}")
+    #_logger.info("#{tab}Memory: #{mems}") if process.env.NODE_ENV == 'dev' or process.env.NODE_ENV == 'development'
     #_logger.info("#{tab}Duration: #{(Date.now() - _logger.starttime) / 100} s")
     #_logger.info("")
-    _logger.info('-----------------------------------------------------------------')
+    #_logger.info('-----------------------------------------------------------------')

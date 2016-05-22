@@ -12,7 +12,7 @@ scm:
 local: true
 nvm:
   - "stable"
-language: "ruby"
+language: "c"
 
 # CMDs
 pre_install: echo test
@@ -21,6 +21,7 @@ install:
   - 'echo More!'
 post_install: 'echo post'
 build: 'echo build cmd'
+post_build: 'echo post'
 
 global:
   npm:

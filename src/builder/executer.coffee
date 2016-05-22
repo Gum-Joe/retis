@@ -20,6 +20,8 @@ builder.execBuild = (config, options, logger) ->
   logger.deb("Language: #{"\'#{config.language}\'".green}")
   engine = new engines.nodejs.Builder(config, options, logger) if language == 'nodejs'
   engine = new engines.ruby.Builder(config, options, logger) if language == 'ruby'
+  engine = new engines.c.Builder(config, options, logger) if language == 'c'
+  engine = new engines.cpp.Builder(config, options, logger) if language == 'cpp'
   # Run pre-build plugins (before:build)
   plugins.run('before:build', logger, config)
   # Defaults

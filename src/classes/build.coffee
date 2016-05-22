@@ -121,9 +121,7 @@ class Build
     # post_install cmd + args
     @post_build_cmd = cmd.generate('post_build')
     @post_build_args = cmd.args('post_build')
-
     # Padding
-    @logger.info("")
 
     @ph.log "retis-build", version
     @logger.deb "Exporting env..."
@@ -227,13 +225,13 @@ class Build
     if @post_build_cmd and @post_build_args
       if typeof @post_build_cmd == 'string'
         # String, so run only one command
-        @logger.info "Running build command..."
+        @logger.info "Running post_build command..."
         @exec(@post_build_cmd, @post_build_args)
         # Spacing
         console.log ""
       else
         # Array, so run multiple commands
-        @logger.info "Running build commands..."
+        @logger.info "Running post_build commands..."
         i = 0
         # Run each of them
         while i < @post_build_cmd.length
