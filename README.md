@@ -12,6 +12,63 @@ Development is currently paused, come back to this
 ```bash
 $ npm install -g retis
 ```
+# Usage
+```
+retis <target> [options]
+```
+Targets:
+
+- `build`
+
+Use `retis <target> --help` for options for a specific target
+
+# How do I use retis?
+Use a config file. Put this in a `.retis.yml`:
+```yaml
+# Plugins that you can use
+# Either ran before or after build
+plugins:
+  - "https://raw.githubusercontent.com/jakhu/retis-tester-1/test/psf.cson"
+name: "retis-example" # Name of your project
+out_dir: "./build" # Build dir
+# Coming soon: Source code pulling
+scm:
+  type: "git"
+  remote: "origin"
+  user:
+    name: Gum-Joe
+# Local build?
+local: true
+# Language of your project (nodejs, ruby, cpp or c)
+language: "nodejs"
+
+# CMDs
+# Put your commands as each property
+pre_install: echo pre_install
+install:
+  - 'echo install'
+  - 'echo You can even have multiple commands!'
+post_install: 'echo post'
+build: 'echo build'
+post_build: 'echo post'
+
+# Global deps (npm, gem or pip)
+global:
+  npm:
+    - "buildup"
+  gem:
+    - "sass"
+  pip:
+    - "request"
+sh:
+  hide_env: false
+
+# Environment variables for your build
+env:
+  - TEST=test
+
+```
+
 # Building
 ```bash
 # Compile libs
