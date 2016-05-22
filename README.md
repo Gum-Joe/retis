@@ -10,7 +10,7 @@ Development is currently paused, come back to this
 
 # Getting Started
 ```bash
-$ npm install -g jakhu/retis-ci
+$ npm install -g retis
 ```
 # Building
 ```bash
