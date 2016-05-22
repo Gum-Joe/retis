@@ -300,7 +300,7 @@ class Build
       err = @output.error
       if err.code == "ENOENT"
         err.message = "Command \'#{cmd}\' not found!"
-      @fail(err)
+      @fail.fail(err)
     #@logger.stdout "Output:" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
     #@logger.stdout "" if @options.hasOwnProperty('showOutput') && @options.showOutput == true
     # Output
@@ -316,7 +316,7 @@ class Build
       err_string = "Command #{"\'".cyan.bold}#{cmd.cyan.bold} #{args.toString().replace(/,/g, ' ').cyan.bold}#{"\'".cyan.bold} exited with #{@output.status.toString().yellow.bold}!"
       @logger.err err_string
       @logger.err ""
-      @fail new Error "Command \'#{cmd} #{args.toString().replace(/,/g, ' ')}\' exited with #{@output.status}!"
+      @fail.fail new Error "Command \'#{cmd} #{args.toString().replace(/,/g, ' ')}\' exited with #{@output.status}!"
 
   ###
   # Run default stuff

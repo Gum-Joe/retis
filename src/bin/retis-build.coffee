@@ -8,7 +8,6 @@ console.time("starting")
 # CLI Setup
 com
   .option '-c, --cwd <dir>', 'Working directory'
-  .option '-d, --docker', 'Run in a docker container'
   .option '-D, --prop [property]', 'Add a property the build. Use the form type:NAME=VALUE. Types: env'
   .option '-e, --trace', 'Show full error message and stack trace on error'
   .option '-f, --file <file>', 'Specify a .retis.yml to use'
@@ -22,8 +21,6 @@ com
   .option '--hide-output', 'Hide command output'
   .option '--no-color', 'Don\'t use coloured output'
   .option '--no-verbose-install', 'Disable verbose logging for installation of dependencies'
-  .option '--os <os>', 'Specify an OS for running the build'
-  .option '--show-output', 'Shows the output of build commands'
   .option '--show-pip-output', 'Show pip installation output'
   .parse process.argv
 
@@ -74,9 +71,11 @@ process.on 'exit', (code) ->
     mems = "#{Math.round(memory.heapUsed / 1024 / 1024)} / #{Math.round(memory.heapTotal / 1024 / 1024)} MB "
     _logger.info("")
     _logger.info('-----------------------------------------------------------------')
-    _logger.info("#{tab}BUILD SUCCESS!")
+    _logger.info("#{tab}BUILD SUCCESS! (took #{(Date.now() - _logger.starttime) / 100} s)")
+    #_logger.info("")
     _logger.info('-----------------------------------------------------------------')
     _logger.info("#{tab}Finished at: #{Date()}")
-    _logger.info("#{tab}Memory: #{mems}")
-    _logger.info("#{tab}Build duration: #{(Date.now() - _logger.starttime) / 100} s")
+    _logger.info("#{tab}Memory: #{mems}") if process.env.NODE_ENV == 'dev' or process.env.NODE_ENV == 'development'
+    #_logger.info("#{tab}Duration: #{(Date.now() - _logger.starttime) / 100} s")
+    #_logger.info("")
     _logger.info('-----------------------------------------------------------------')

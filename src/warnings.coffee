@@ -18,8 +18,6 @@ warn.warnings = (config, options, logger) ->
   if typeof options.local != 'undefined' && options.local == true || config.hasOwnProperty('local') && config.local == true
     # body...
     _localWarnings(config, logger)
-
-  logger.info("");
   return
 
 ###

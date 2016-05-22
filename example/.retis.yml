@@ -17,7 +17,7 @@ language: "ruby"
 # CMDs
 pre_install: echo test
 install:
-  - 'npm install -g buildup --color=always'
+  - 'echo p'
   - 'echo More!'
 post_install: 'echo post'
 build: 'echo build cmd'

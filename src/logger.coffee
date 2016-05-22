@@ -37,7 +37,7 @@ class Logger
   ###
   info: (txt) ->
     # body...
-    infostring = chalk.green("INFO")
+    infostring = chalk.green.bold("INFO")
     if typeof ENV['DEBUG'] != 'undefined' && ~ENV['DEBUG'].indexOf @prefix
       # body...
       @debug "#{"#{infostring}".green} #{txt}"

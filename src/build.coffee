@@ -9,7 +9,7 @@ mkdirs = require './mkdirs'
 os = require 'os'
 {execBuild} = require './builder/executer'
 async = require 'async'
-warn = require './warnings'
+#warn = require './warnings'
 # Vars
 app = module.exports = {}
 retis_plugin_dir = '.retis/plugins'
@@ -22,7 +22,7 @@ plugins_func = []
 ###
 app.build = (options) ->
   _logger = new Logger('retis', options)
-  _logger.info('Scanning for project specification...')
+  _logger.deb('Scanning for project specification...')
   _logger.deb("CWD: #{"\'#{process.cwd()}\'".green}")
   config = parseConfig options
   @name = config.name if config.hasOwnProperty 'name'
@@ -34,10 +34,12 @@ app.build = (options) ->
   _logger.deb("Starting build...")
   # Begin build
   #_logger.info("")
-  warn.warnings(config, options, _logger)
+  # For later
+  #warn.warnings(config, options, _logger)
+  _logger.info("")
   #_logger.info(":---------------------------------------------:")
-  _logger.info("Building Project \'#{@name[@name.length - 1]}\'...") if config.hasOwnProperty('name') == false
-  _logger.info("Building Project \'#{@name}\'...") if config.hasOwnProperty('name') == true
+  _logger.info("  Building \'#{@name[@name.length - 1]}\'...") if config.hasOwnProperty('name') == false
+  _logger.info("  Building \'#{@name}\'...") if config.hasOwnProperty('name') == true
   #_logger.info(":---------------------------------------------:")
   _logger.info("")
   mkdirs(_logger)

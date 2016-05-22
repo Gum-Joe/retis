@@ -33,7 +33,7 @@ downloader.get = (url, save, options, callback) ->
   file_stream = fs.createWriteStream(save)
   # Time
   time = chalk.grey("#{new Date().getHours()}:#{new Date().getMinutes()}:#{new Date().getSeconds()}")
-  infostring = chalk.green("INFO")
+  infostring = chalk.green.bold("INFO")
   info = "[ #{time} #{infostring} ]"
   log("#{info} Downloading #{url}...0% at 0 kb/sec...\n")
   progress(request(url))
